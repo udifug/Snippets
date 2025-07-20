@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 
 def index_page(request):
-    context = {'pagename': 'PythonBin'}
+    context = {'pagename': 'Главное меню'}
     return render(request, 'pages/index.html', context)
 
 
