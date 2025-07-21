@@ -7,12 +7,16 @@
 
 
 {% block content %}
-         <div class="row">
+    <div class="row">
         <div class="col">
-            <form action="{% url 'snippets-add' %}" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
+            {% if edit %}
+                <form action="{% url 'snippet-edit' id %}" method="post">
+            {% else %}
+                <form action="{% url 'snippets-add' %}" method="post">
+            {% endif %}
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
             </form>
         </div>
     </div>
