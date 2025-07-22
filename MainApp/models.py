@@ -7,6 +7,13 @@ LANG_CHOICES = [
     ("javascript", "JavaScript")
 ]
 
+LANG_ICONS = {
+    "python":"fa-brands fa-python",
+    "cpp": "fa-solid fa-code",
+    "java": "fa-brands fa-java",
+    "javascript": "fa-brands fa-js",
+}
+
 
 class Snippet(models.Model):
     name = models.CharField(max_length=100)
@@ -15,6 +22,7 @@ class Snippet(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     views_count = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name

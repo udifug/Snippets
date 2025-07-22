@@ -6,11 +6,12 @@ from MainApp.models import LANG_CHOICES
 class SnippetForm(forms.ModelForm):
     class Meta:
         model = Snippet
-        fields = ['name', 'lang', 'code']
+        fields = ['name', 'lang', 'code', 'description']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название сниппета'}),
             'lang': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Выберите язык'}),
             'code': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Код сниппета'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание'}),
         }
 
     def clean_name(self):

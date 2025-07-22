@@ -3,8 +3,11 @@ from django.http import Http404
 from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm
+from MainApp.models import LANG_ICONS
 
 
+def get_icon(lang):
+    return LANG_ICONS.get(lang)
 def index_page(request):
     context = {
         'pagename': 'Главное меню'
@@ -37,6 +40,8 @@ def snippet_create(request):
 
 def snippets_list(request):
     snippets = Snippet.objects.all()
+    for snippet in snippets:
+        snippet.icon = get_icon(snippet.lang)
     context = {
         'pagename': "Список всех сниппетов",
         'snippets': snippets

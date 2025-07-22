@@ -59,22 +59,19 @@
                 {% endif %}
             </div>
 
+            <div class="mb-3">
+                {{ form.description }}
+                {% if form.description.error %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.description.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
             <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
             </form>
         </div>
     </div>
 {% endblock %}
-
-{#    <div class="row">#}
-{#        <div class="col">#}
-{#            {% if edit %}#}
-{#                <form action="{% url 'snippet-edit' id %}" method="post">#}
-{#            {% else %}#}
-{#                <form action="{% url 'snippets-add' %}" method="post">#}
-{#            {% endif %}#}
-{#            {% csrf_token %}#}
-{#            {{ form }}#}
-{#            <input type="submit" class="btn btn-primary btn-block" value="Сохранить">#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}

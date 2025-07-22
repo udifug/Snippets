@@ -12,30 +12,44 @@
                 Название: <input type="text" value="{{ snippet.name }}" class="form-control">
             </div>
             <div class="col col-3">
-                Дата создания:<input type="text" value="{{ snippet.creation_date|date:'d.m.Y' }} {{ snippet.creation_date|time:'H:i ' }}" class="form-control">
+                Дата создания:<input type="text"
+                                     value="{{ snippet.creation_date|date:'d.m.Y' }} {{ snippet.creation_date|time:'H:i ' }}"
+                                     class="form-control">
             </div>
             <div class="col col-3">
-                Дата изменения:<input type="text" value="{{ snippet.updated_at|date:'d.m.Y' }} {{ snippet.updated_at|time:'H:i ' }}" class="form-control">
+                Дата изменения:<input type="text"
+                                      value="{{ snippet.updated_at|date:'d.m.Y' }} {{ snippet.updated_at|time:'H:i ' }}"
+                                      class="form-control">
             </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col">
-                <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
-                    <p>
-                        {{ snippet.code }}
-                    </p>
+            <div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
+                        <p>
+                            {{ snippet.code }}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <a href="{% url 'snippet-edit' snippet.id %}">Изменить<i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="{% url 'snippet-delete' snippet.id %}">Удалить<i style="color: darkred"
-                                                                          class="fa-solid fa-trash"></i></a>
+            <div class="row">
+                <div class="col">
+                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
+                        <p>
+                            {{ snippet.description }}
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-     <div class="d-flex justify-content-end">
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'snippet-edit' snippet.id %}">Изменить<i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{% url 'snippet-delete' snippet.id %}">Удалить<i style="color: darkred"
+                                                                              class="fa-solid fa-trash"></i></a>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
                 <i class="text-muted">Просмотрено: {{ snippet.views_count }}</i></div>
         </div>
     </fieldset>

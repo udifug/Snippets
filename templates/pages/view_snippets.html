@@ -25,6 +25,7 @@
                     <tr>
                         <td scope="row">{{ snippet.id }}</td>
                         <td>
+                            <i class="{{ snippet.icon }}"></i>
                             <a href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
 
                         </td>
