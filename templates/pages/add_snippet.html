@@ -14,10 +14,67 @@
             {% else %}
                 <form action="{% url 'snippets-add' %}" method="post">
             {% endif %}
+
             {% csrf_token %}
-            {{ form }}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        <li>{{ error }}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+
+            <div class="mb-3">
+                {{ form.name }}
+                {% if  form.name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.lang }}
+                {% if form.lang.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.lang.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.code }}
+                {% if form.code.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.code.errors %}
+                             <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
             <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
             </form>
         </div>
     </div>
 {% endblock %}
+
+{#    <div class="row">#}
+{#        <div class="col">#}
+{#            {% if edit %}#}
+{#                <form action="{% url 'snippet-edit' id %}" method="post">#}
+{#            {% else %}#}
+{#                <form action="{% url 'snippets-add' %}" method="post">#}
+{#            {% endif %}#}
+{#            {% csrf_token %}#}
+{#            {{ form }}#}
+{#            <input type="submit" class="btn btn-primary btn-block" value="Сохранить">#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
