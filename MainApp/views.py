@@ -1,5 +1,6 @@
 from MainApp.models import Snippet
 from django.http import Http404
+from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm
 
@@ -34,7 +35,7 @@ def snippet_create(request):
             return render(request, 'pages/add_snippet.html', context)
 
 
-def snippets_page(request):
+def snippets_list(request):
     snippets = Snippet.objects.all()
     context = {
         'pagename': "Список всех сниппетов",
@@ -45,6 +46,9 @@ def snippets_page(request):
 
 def snippet_page(request, id):
     snippet = get_object_or_404(Snippet, id=id)
+    snippet.views_count = F("views_count") + 1
+    snippet.save(update_fields=['views_count'])
+    snippet.refresh_from_db()
     context = {
         'pagename': "Информация о сниппете",
         'snippet': snippet

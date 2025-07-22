@@ -15,6 +15,7 @@
                     <th scope="col">Название</th>
                     <th scope="col">Дата создания</th>
                     <th scope="col">Дата изменения</th>
+                    <th scope="col">Просмотрено</th>
                     <th scope="col">Изменить</th>
                     <th scope="col">Удалить</th>
                 </tr>
@@ -35,7 +36,9 @@
                             {{ snippet.updated_at|date:'d.m.Y' }}
                             {{ snippet.updated_at|time:'H:i ' }}
                         </td>
-
+                        <td>
+                            {{ snippet.views_count }}
+                        </td>
                         <td>
                             <a href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                             {# значек посередите #}
