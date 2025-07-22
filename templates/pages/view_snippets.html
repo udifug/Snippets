@@ -6,33 +6,56 @@
 {% endblock %}
 
 {% block content %}
-        <div class="row">
-            <div class="col">
-                <table class="table table-striped">
-                    <thead class="table-dark">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Название</th>
-                        <th scope="col">Дата создания</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for snippet in snippets %}
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col">Дата изменения</th>
+                    <th scope="col">Изменить</th>
+                    <th scope="col">Удалить</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for snippet in snippets %}
                     <tr>
                         <td scope="row">{{ snippet.id }}</td>
                         <td>
                             <a href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
-                            <a href="{% url 'snippet-edit' snippet.id %}"><i  class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="{% url 'snippet-delete' snippet.id %}"> <i class="fa-solid fa-trash"></i></a>
+
                         </td>
-                        <td>{{ snippet.creation_date}}</td>
+                        <td>
+                            {{ snippet.creation_date|date:'d.m.Y' }}
+                            {{ snippet.creation_date|time:'H:i ' }}
+                        </td>
+                        <td>
+                            {{ snippet.updated_at|date:'d.m.Y' }}
+                            {{ snippet.updated_at|time:'H:i ' }}
+                        </td>
+
+                        <td>
+                            <a href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {# значек посередите #}
+                        </td>
+
+                        <td>
+                            <a href="{% url 'snippet-delete' snippet.id %}"><i class="fa-solid fa-trash"></i></a>
+                        </td>
                     </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-end">
-                    <i class="text-muted">Всего сниппетов: {{ snippets.count }}</i></div>
-            </div>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <li>На данный момент список пуст</li>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <i class="text-muted">Всего сниппетов: {{ snippets.count }}</i></div>
         </div>
     </div>
- {% endblock %}
+{% endblock %}
