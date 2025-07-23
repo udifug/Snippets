@@ -154,3 +154,4 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect('home')
+

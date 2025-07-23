@@ -1,9 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block style %}
-    {{ block.super }}
-{% endblock %}
 
 {% block content %}
     <fieldset disabled>
@@ -46,14 +41,13 @@
                 <div class="row">
                     <div class="col">
                         <a href="{% url 'snippet-edit' snippet.id %}">
-                            Изменить<i class="fa-solid fa-pen-to-square"></i>
+                            <button type="button" class="btn btn-warning">Изменить</button>
                         </a>
-
 
                         <a href="{% url 'snippet-delete' snippet.id %}">
-                            Удалить<i style="color: darkred" class="fa-solid fa-trash"></i>
+                            <button type="button" class="btn btn-danger">Удалить</button>
                         </a>
-                         {% if errors %}
+                        {% if errors %}
                             <div class="alert alert-danger" role="alert">
                                 <ul>
                                     {% for error in errors %}
