@@ -1,3 +1,5 @@
+from idlelib.iomenu import errors
+
 from MainApp.models import Snippet
 from django.http import Http404
 from django.db.models import F
@@ -103,7 +105,10 @@ def user_login(request):
             auth.login(request, user)
             return redirect('home')
         else:
-            pass
+            context = {
+                'errors': ['Некорректный логин или пароль'],
+            }
+            return render(request, 'pages/index.html', context)
 
 def user_logout(request):
     auth.logout(request)
