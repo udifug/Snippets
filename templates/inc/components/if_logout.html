@@ -1,29 +1,43 @@
 <li class="nav-item dropdown">
+
+    <a class="btn btn-outline-info" href="{% url 'snippets-list' %}">
+        Посмотреть сниппеты
+    </a>
+
     <a class="btn btn-outline-primary dropdown-toggle" href="#" id="navbarDropdown"
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
         Авторизация
     </a>
+
     <div class="dropdown-menu dropdown-menu-end" style="min-width: 300px;">
         <form class="px-4 py-3" action="{% url 'login' %}" method="post">
             {% csrf_token %}
+
             {% if errors %}
                 <div class="alert alert-danger" role="alert">
-                <ul>
-                    {% for error in errors %}
-                        {{ error }}
-                    {% endfor %}
-                </ul>
+                    <ul>
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
+
             <div class="form-group mb-2">
                 <input type="text" class="form-control" id="usernameInput" name="username"
                        placeholder="Имя пользователя" required>
             </div>
+
             <div class="form-group mb-2">
                 <input type="password" class="form-control" id="passwordInput" name="password"
                        placeholder="Пароль" required>
             </div>
+
             <button type="submit" class="btn btn-outline-success">Войти</button>
+
         </form>
+
         <div class="dropdown-divider"></div>
+
     </div>
 </li>

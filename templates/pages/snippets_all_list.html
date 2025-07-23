@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col" class="text-center">Название</th>
+                    <th scope="col" class="text-center">Язык</th>
+                    <th scope="col" class="text-center">Последние изменения</th>
+                    <th scope="col" class="text-center">Просмотрено</th>
+                    <th scope="col" class="text-center">Автор</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for snippet in snippets %}
+                    <tr>
+                        <td scope="row">{{ snippet.id }}</td>
+
+                        <td class="text-center"><a href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                        </td>
+
+                        <td scope="row" class="text-center"><i class="{{ snippet.icon }}"></i></td>
+
+                        <td class="text-center">
+                            {{ snippet.updated_at|date:'d.m.Y' }}
+                            {{ snippet.updated_at|time:'H:i ' }}
+                        </td>
+
+                        <td class="text-center">
+                            {{ snippet.views_count }}
+                        </td>
+                        <td class="text-center">
+                            {{ snippet.user }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr class="text-center">
+                        <td colspan="12">На данный момент список пуст</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end">
+                <i class="text-muted">Всего сниппетов: {{ snippets.count }}</i>
+            </div>
+        </div>
+    </div>
+{% endblock %}

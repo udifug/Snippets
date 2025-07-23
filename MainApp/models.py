@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 LANG_CHOICES = [
     ("python", "Python"),
@@ -23,6 +24,7 @@ class Snippet(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     views_count = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name

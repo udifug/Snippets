@@ -11,28 +11,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item me-2">
-                        <a class="btn btn-outline-secondary" href="{% url 'snippets-add' %}">
-                            Добавить сниппет
-                        </a>
-                    </li>
+            {% if request.user.is_authenticated %}
+                {% include 'inc/components/if_login.html' %}
+            {% else %}
+                {% include 'inc/components/if_logout.html' %}
+            {% endif %}
 
-                    <li class="nav-item">
-                        <a class="btn btn-outline-info" href="{% url 'snippets-list' %}">
-                            Посмотреть сниппеты
-                        </a>
-                    </li>
-
-                    {% if request.user.is_authenticated %}
-                        {% include 'inc/components/logout.html' %}
-                    {% else %}
-                        {% include 'inc/components/login.html' %}
-
-                    {% endif %}
-                </ul>
-            </div>
         </div>
     </nav>
 </header>
