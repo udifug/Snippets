@@ -4,6 +4,7 @@ from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm
 from MainApp.models import LANG_ICONS
+from django.contrib import auth
 
 
 def get_icon(lang):
@@ -91,3 +92,19 @@ def snippet_edit(request, id):
                 'pagename': 'Редактирование cниппета'
             }
             return render(request, 'pages/add_snippet.html', context)
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('home')
+        else:
+            pass
+
+def user_logout(request):
+    auth.logout(request)
+    return redirect('home')

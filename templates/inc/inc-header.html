@@ -5,9 +5,12 @@
                 <img src="/static/images/logo.png" width="32" height="32" alt="">
                 PythonBin
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                     <li class="nav-item me-2">
@@ -15,11 +18,29 @@
                             Добавить сниппет
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="btn btn-outline-info" href="{% url 'snippets-list' %}">
                             Посмотреть сниппеты
                         </a>
                     </li>
+
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            Welcome, {{ request.user.username }}
+                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                            {% else %}
+                            <form method="post" action="{% url 'login' %}">
+                                {% csrf_token %}
+                                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                                <input class="form-control me-2" name="username" type="text"
+                                       placeholder="Имя пользователя">
+                                <input class="form-control me-2" name="password" type="password" placeholder="Пароль">
+                                <button type="submit" class="btn btn-outline-success">Войти</button>
+                                </ul>
+                            </form>
+                    {% endif %}
                 </ul>
             </div>
         </div>
