@@ -26,20 +26,9 @@
                     </li>
 
                     {% if request.user.is_authenticated %}
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            Welcome, {{ request.user.username }}
-                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
-                            {% else %}
-                            <form method="post" action="{% url 'login' %}">
-                                {% csrf_token %}
-                                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                                <input class="form-control me-2" name="username" type="text"
-                                       placeholder="Имя пользователя">
-                                <input class="form-control me-2" name="password" type="password" placeholder="Пароль">
-                                <button type="submit" class="btn btn-outline-success">Войти</button>
-                                </ul>
-                            </form>
+                        {% include 'inc/components/logout.html' %}
+                    {% else %}
+                        {% include 'inc/components/login.html' %}
                     {% endif %}
                 </ul>
             </div>
