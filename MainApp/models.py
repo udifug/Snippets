@@ -9,12 +9,16 @@ LANG_CHOICES = [
 ]
 
 LANG_ICONS = {
-    "python":"fa-brands fa-python",
+    "python": "fa-brands fa-python",
     "cpp": "fa-solid fa-code",
     "java": "fa-brands fa-java",
     "javascript": "fa-brands fa-js",
 }
 
+ACCESS_CHOICES = [
+    ("public", "Публичный"),
+    ("private", "Частный"),
+]
 
 class Snippet(models.Model):
     name = models.CharField(max_length=100)
@@ -25,6 +29,7 @@ class Snippet(models.Model):
     views_count = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
+    access = models.CharField(max_length=30, choices=ACCESS_CHOICES,default='public')
 
     def __str__(self):
         return self.name

@@ -38,6 +38,17 @@
             </div>
 
             <div class="mb-3">
+                {{ form.access }}
+                {% if form.access.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.access.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
                 {{ form.lang }}
                 {% if form.lang.errors %}
                     <div class="alert alert-danger" role="alert">
@@ -53,7 +64,7 @@
                 {% if form.code.errors %}
                     <div class="alert alert-danger" role="alert">
                         {% for error in form.code.errors %}
-                             <li>{{ error }}</li>
+                            <li>{{ error }}</li>
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -69,6 +80,7 @@
                     </div>
                 {% endif %}
             </div>
+
 
             <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
             </form>

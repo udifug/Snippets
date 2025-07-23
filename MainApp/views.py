@@ -1,7 +1,7 @@
 from idlelib.iomenu import errors
-
+from django.db.models import Q
 from MainApp.models import Snippet
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm
@@ -9,13 +9,17 @@ from MainApp.models import LANG_ICONS
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
+
 def get_icon(lang):
     return LANG_ICONS.get(lang)
+
+
 def index_page(request):
     context = {
         'pagename': 'Главное меню'
     }
     return render(request, 'pages/index.html', context)
+
 
 @login_required
 def snippet_create(request):
@@ -44,7 +48,13 @@ def snippet_create(request):
 
 
 def snippets_list(request):
-    snippets = Snippet.objects.all()
+    if request.user.is_authenticated:
+        snippets = Snippet.objects.filter(
+            Q(access="public") | Q(user=request.user)
+        ).distinct()
+    else:
+        snippets = Snippet.objects.filter(access="public")
+
     for snippet in snippets:
         snippet.icon = get_icon(snippet.lang)
     context = {
@@ -52,6 +62,8 @@ def snippets_list(request):
         'snippets': snippets
     }
     return render(request, 'pages/snippets_all_list.html', context)
+
+
 @login_required
 def user_list(request):
     snippets = Snippet.objects.filter(user=request.user)
@@ -75,15 +87,31 @@ def snippet_page(request, id):
     }
     return render(request, 'pages/snippet_page.html', context)
 
+
 @login_required
 def snippet_delete(request, id):
     snippet = get_object_or_404(Snippet, id=id)
+    if snippet.user != request.user:
+        context = {
+            "snippet": snippet,
+            "errors": ["У вас нету доступа на удаление"]
+        }
+        return render(request, 'pages/snippet_page.html', context)
+
     snippet.delete()
     return redirect("snippets-user-list")
+
 
 @login_required
 def snippet_edit(request, id):
     snippet = get_object_or_404(Snippet, id=id)
+    if snippet.user != request.user:
+        context = {
+            "snippet": snippet,
+            "errors": ["У вас нету доступа на изменения"]
+        }
+        return render(request, 'pages/snippet_page.html', context)
+
     if request.method == 'GET':
         form = SnippetForm(instance=snippet)
         context = {
@@ -99,13 +127,13 @@ def snippet_edit(request, id):
         if form.is_valid():
             form.save()
             return redirect("snippets-user-list")
-
         else:
             context = {
                 'form': form,
                 'pagename': 'Редактирование cниппета'
             }
             return render(request, 'pages/snippet_add_or_edit.html', context)
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -121,6 +149,7 @@ def user_login(request):
                 'errors': ['Некорректный логин или пароль'],
             }
             return render(request, 'pages/index.html', context)
+
 
 def user_logout(request):
     auth.logout(request)

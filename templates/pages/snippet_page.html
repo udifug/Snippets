@@ -42,7 +42,30 @@
                     </div>
                 </div>
             </div>
+            {% if request.user.is_authenticated %}
+                <div class="row">
+                    <div class="col">
+                        <a href="{% url 'snippet-edit' snippet.id %}">
+                            Изменить<i class="fa-solid fa-pen-to-square"></i>
+                        </a>
 
+
+                        <a href="{% url 'snippet-delete' snippet.id %}">
+                            Удалить<i style="color: darkred" class="fa-solid fa-trash"></i>
+                        </a>
+                         {% if errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <ul>
+                                    {% for error in errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endif %}
             <div class="d-flex justify-content-end">
                 <i class="text-muted">Просмотрено: {{ snippet.views_count }}</i></div>
         </div>
