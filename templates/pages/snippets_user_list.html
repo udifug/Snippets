@@ -7,8 +7,8 @@
                 <thead class="table-dark">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col" class="text-center">Название</th>
-                     <th scope="col" class="text-center">Язык</th>
+                    <th scope="col">Название</th>
+                    <th scope="col" class="text-center">Язык</th>
                     <th scope="col" class="text-center">Дата создания</th>
                     <th scope="col" class="text-center">Дата изменения</th>
                     <th scope="col" class="text-center">Просмотрено</th>
@@ -18,36 +18,41 @@
                 </thead>
                 <tbody>
                 {% for snippet in snippets %}
-                        <tr>
-                            <td scope="row">{{ snippet.id }}</td>
-                            <td class="text-center">
-                                <a href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
-                            </td>
-                             <td scope="row" class="text-center"><i class="{{ snippet.icon }}"></i></td>
-                            <td class="text-center">
-                                {{ snippet.creation_date|date:'d.m.Y' }}
-                                {{ snippet.creation_date|time:'H:i ' }}
-                            </td>
-                            <td class="text-center">
-                                {{ snippet.updated_at|date:'d.m.Y' }}
-                                {{ snippet.updated_at|time:'H:i ' }}
-                            </td>
+                    <tr>
+                        <td scope="row">{{ snippet.id }}</td>
+                        <td class=>
+                            {% if snippet.access == "public" %}
+                                <i class="fa-solid fa-lock-open"></i>
+                            {% else %}
+                                <i class="fa-solid fa-lock"></i>
+                            {% endif %}
+                            <a style="color: black" href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                        </td>
+                        <td scope="row" class="text-center"><i class="{{ snippet.icon }}"></i></td>
+                        <td class="text-center">
+                            {{ snippet.creation_date|date:'d.m.Y' }}
+                            {{ snippet.creation_date|time:'H:i ' }}
+                        </td>
+                        <td class="text-center">
+                            {{ snippet.updated_at|date:'d.m.Y' }}
+                            {{ snippet.updated_at|time:'H:i ' }}
+                        </td>
 
-                            <td class="text-center">
-                                {{ snippet.views_count }}
-                            </td>
+                        <td class="text-center">
+                            {{ snippet.views_count }}
+                        </td>
 
-                            <td class="text-center">
-                                <a href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                            </td>
+                        <td class="text-center">
+                            <a  style="color: black" href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        </td>
 
-                            <td class="text-center">
-                                <a href="{% url 'snippet-delete' snippet.id %}"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
+                        <td class="text-center">
+                            <a  style="color: black" href="{% url 'snippet-delete' snippet.id %}"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
                 {% empty %}
                     <tr class="text-center">
-                        <td colspan="12" >На данный момент список пуст</td>
+                        <td colspan="12">На данный момент список пуст</td>
                     </tr>
                 {% endfor %}
 

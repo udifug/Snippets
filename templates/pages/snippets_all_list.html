@@ -7,11 +7,11 @@
                 <thead class="table-dark">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col" class="text-center">Название</th>
-                    <th scope="col" class="text-center">Язык</th>
+                    <th scope="col">Название</th>
+
                     <th scope="col" class="text-center">Последние изменения</th>
                     <th scope="col" class="text-center">Просмотрено</th>
-                    <th scope="col" class="text-center">Автор</th>
+                    <th scope="col" >Автор</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -19,10 +19,10 @@
                     <tr>
                         <td scope="row">{{ snippet.id }}</td>
 
-                        <td class="text-center"><a href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                        <td >
+                            <i class="{{ snippet.icon }}"></i>
+                            <a style="color: black" href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                         </td>
-
-                        <td scope="row" class="text-center"><i class="{{ snippet.icon }}"></i></td>
 
                         <td class="text-center">
                             {{ snippet.updated_at|date:'d.m.Y' }}
@@ -32,7 +32,12 @@
                         <td class="text-center">
                             {{ snippet.views_count }}
                         </td>
-                        <td class="text-center">
+                        <td >
+                            {% if snippet.access == "public"%}
+                                <i class="fa-solid fa-lock-open"></i>
+                            {% else %}
+                                <i class="fa-solid fa-lock"></i>
+                            {% endif %}
                             {{ snippet.user }}
                         </td>
                     </tr>

@@ -17,7 +17,7 @@ LANG_ICONS = {
 
 ACCESS_CHOICES = [
     ("public", "Публичный"),
-    ("private", "Частный"),
+    ("private", "Приватный"),
 ]
 
 class Snippet(models.Model):

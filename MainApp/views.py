@@ -1,8 +1,7 @@
 from idlelib.iomenu import errors
-from django.db.models import Q
 from MainApp.models import Snippet
 from django.http import Http404, HttpResponseForbidden
-from django.db.models import F
+from django.db.models import F , Q
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm , UserRegistrationForm
 from MainApp.models import LANG_ICONS
@@ -166,6 +165,7 @@ def user_login(request):
             return redirect('home')
         else:
             context = {
+                'pagename': 'Главное меню',
                 'errors': ['Некорректный логин или пароль'],
             }
             return render(request, 'pages/index.html', context)
