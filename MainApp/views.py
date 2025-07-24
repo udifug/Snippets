@@ -4,7 +4,7 @@ from MainApp.models import Snippet
 from django.http import Http404, HttpResponseForbidden
 from django.db.models import F
 from django.shortcuts import render, redirect, get_object_or_404
-from MainApp.forms import SnippetForm
+from MainApp.forms import SnippetForm , UserRegistrationForm
 from MainApp.models import LANG_ICONS
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -134,6 +134,26 @@ def snippet_edit(request, id):
             }
             return render(request, 'pages/snippet_add_or_edit.html', context)
 
+def user_registration(request):
+    if request.method == "GET":
+        user_form = UserRegistrationForm()
+        context = {
+            "pagename": "Регистрация",
+            'user_form': user_form
+        }
+        return render(request, 'pages/user_registration.html', context)
+
+    if request.method == "POST":
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect("home")
+        else:
+            context = {
+                "pagename": "Регистрация",
+                "user_form": user_form
+            }
+            return render(request, 'pages/user_registration.html', context)
 
 def user_login(request):
     if request.method == 'POST':

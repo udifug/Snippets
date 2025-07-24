@@ -9,6 +9,10 @@
         Авторизация
     </a>
 
+    <a class="btn btn-outline-info" href="{% url 'registration' %}">
+        Регистрация
+    </a>
+
     <div class="dropdown-menu dropdown-menu-end" style="min-width: 300px;">
         <form class="px-4 py-3" action="{% url 'login' %}" method="post">
             {% csrf_token %}
