@@ -1,0 +1,19 @@
+<div class="row mt-4">
+    <div class="col-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Оставить комментарий</h5>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'comment-add' %}" method="POST">
+                    <div class="mb-3">
+                        {% csrf_token %}
+                        {{ comments_form.text }}
+                    </div>
+                    <input type="hidden" name="snippet_id" value="{{ snippet.id }}">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

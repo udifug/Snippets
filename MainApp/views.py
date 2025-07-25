@@ -1,9 +1,9 @@
 from idlelib.iomenu import errors
-from MainApp.models import Snippet
+from MainApp.models import Snippet, Comment
 from django.http import Http404, HttpResponseForbidden
 from django.db.models import F , Q
 from django.shortcuts import render, redirect, get_object_or_404
-from MainApp.forms import SnippetForm , UserRegistrationForm
+from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from MainApp.models import LANG_ICONS
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -80,11 +80,32 @@ def snippet_page(request, id):
     snippet.views_count = F("views_count") + 1
     snippet.save(update_fields=['views_count'])
     snippet.refresh_from_db()
+    comments_form = CommentForm()
+    comments = Comment.objects.filter(snippet=snippet)
+    # comments = snippet.comments.all()
     context = {
-        'pagename': "Информация о сниппете",
-        'snippet': snippet
+        'pagename' : "Информация о сниппете",
+        'snippet' : snippet,
+        'comments' : comments,
+        'comments_form' : comments_form
     }
     return render(request, 'pages/snippet_page.html', context)
+
+
+def comment_add(request):
+    if request.method =="POST":
+        comment_form = CommentForm(request.POST)
+        snippet_id = request.POST.get("snippet_id")
+        snippet = get_object_or_404(Snippet, id=snippet_id)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.snippet = snippet
+            comment.save()
+        return redirect("snippet-page", id=snippet_id)
+
+    return Http404
 
 
 @login_required

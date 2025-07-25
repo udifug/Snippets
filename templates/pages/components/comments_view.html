@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Всего комментариев: <span class="badge bg-secondary">{{ comments.count }}</span></h5>
+            <button class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-arrow-up-short-wide"></i>
+                Сортировка
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-8">
+        <ul class="list-group mb-3">
+            {% for comment in comments %}
+            <li class="list-group-item d-flex align-items-start">
+                <div class="w-100">
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ comment.author }}</h5>
+                            <small class="text-muted">
+                                {{ comment.creation_date|date:'d.m.Y' }}
+                                {{ comment.creation_date|time:'H:i ' }}
+                            </small>
+                        </div>
+                        <p class="mb-1">
+                            {{ comment.text}}
+                        </p>
+
+                        <small>
+                            <a href="#" class="text-decoration-none me-2">Ответить</a>
+                            <a href="#" class="text-decoration-none me-2">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                            </a>
+                        </small>
+
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
