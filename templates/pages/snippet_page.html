@@ -3,7 +3,9 @@
 {% block content %}
     {% include "pages/components/snippet_page_view.html" %}
 
+    {% if request.user.is_authenticated %}
     {% include "pages/components/comment_form.html" %}
+    {% endif %}
 
     {% include "pages/components/comments_view.html" %}
 

@@ -76,13 +76,12 @@ def user_list(request):
 
 
 def snippet_page(request, id):
-    snippet = get_object_or_404(Snippet, id=id)
+    snippet = Snippet.objects.prefetch_related('comments').get(id=id)
     snippet.views_count = F("views_count") + 1
     snippet.save(update_fields=['views_count'])
     snippet.refresh_from_db()
     comments_form = CommentForm()
-    comments = Comment.objects.filter(snippet=snippet)
-    # comments = snippet.comments.all()
+    comments = snippet.comments.all()
     context = {
         'pagename' : "Информация о сниппете",
         'snippet' : snippet,
