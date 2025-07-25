@@ -19,14 +19,14 @@
                 <tbody>
                 {% for snippet in snippets %}
                     <tr>
-                        <td scope="row">{{ snippet.id }}</td>
-                        <td class=>
-                            {% if snippet.access == "public" %}
+                        <td scope="row">{{ snippet.id }}
+                        {% if snippet.access == "public" %}
                                 <i class="fa-solid fa-lock-open"></i>
                             {% else %}
                                 <i class="fa-solid fa-lock"></i>
-                            {% endif %}
-                            <a style="color: black" href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                            {% endif %}</td>
+                        <td>
+                            <a class="text-light text-decoration-none fw-bold" href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                         </td>
                         <td scope="row" class="text-center"><i class="{{ snippet.icon }}"></i></td>
                         <td class="text-center">
@@ -43,11 +43,11 @@
                         </td>
 
                         <td class="text-center">
-                            <a  style="color: black" href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a style="color: aliceblue" href="{% url 'snippet-edit' snippet.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                         </td>
 
                         <td class="text-center">
-                            <a  style="color: black" href="{% url 'snippet-delete' snippet.id %}"><i class="fa-solid fa-trash"></i></a>
+                            <a style="color: aliceblue"  href="{% url 'snippet-delete' snippet.id %}"><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
                 {% empty %}

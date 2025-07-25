@@ -54,18 +54,24 @@ def snippets_list(request):
     else:
         snippets = Snippet.objects.filter(access="public")
 
+    sort = request.GET.get("sort")
+    if sort:
+        snippets = snippets.order_by(sort)
+
     for snippet in snippets:
         snippet.icon = get_icon(snippet.lang)
     context = {
         'pagename': "Список всех сниппетов",
-        'snippets': snippets
+        'snippets': snippets,
+        "sort" : sort,
     }
-    return render(request, 'pages/snippets_all_list.html', context)
+    return render(request, 'pages/snippets_list.html', context)
 
 
 @login_required
 def user_list(request):
     snippets = Snippet.objects.filter(user=request.user)
+
     for snippet in snippets:
         snippet.icon = get_icon(snippet.lang)
     context = {
@@ -82,13 +88,14 @@ def snippet_page(request, id):
     snippet.refresh_from_db()
     comments_form = CommentForm()
     comments = snippet.comments.all()
+
     context = {
         'pagename' : "Информация о сниппете",
         'snippet' : snippet,
         'comments' : comments,
         'comments_form' : comments_form
     }
-    return render(request, 'pages/snippet_page.html', context)
+    return render(request, 'pages/snippet_detail.html', context)
 
 
 def comment_add(request):
@@ -115,7 +122,7 @@ def snippet_delete(request, id):
             "snippet": snippet,
             "errors": ["У вас нету доступа на удаление"]
         }
-        return render(request, 'pages/snippet_page.html', context)
+        return render(request, 'pages/snippet_detail.html', context)
 
     snippet.delete()
     return redirect("snippets-user-list")
@@ -129,7 +136,7 @@ def snippet_edit(request, id):
             "snippet": snippet,
             "errors": ["У вас нету доступа на изменения"]
         }
-        return render(request, 'pages/snippet_page.html', context)
+        return render(request, 'pages/snippet_detail.html', context)
 
     if request.method == 'GET':
         form = SnippetForm(instance=snippet)

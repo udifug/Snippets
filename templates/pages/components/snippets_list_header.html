@@ -1,0 +1,72 @@
+<thead class="table-dark">
+<tr>
+    {% if sort == '-id' %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=id">ID</a>
+            <i class="fa-solid fa-arrow-down"></i></th>
+    {% elif sort == 'id' %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-id">ID</a>
+            <i class="fa-solid fa-arrow-up"></th>
+    {% else %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=id">ID</a></th>
+    {% endif %}
+
+    {% if sort == 'name' %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-name">Название</a>
+            <i class="fa-solid fa-arrow-down"></i></th>
+    {% elif sort == '-name' %}
+        <th scope="col"><a class="text-light text-decoration-none fw-bold" href="?sort=name">Название</a>
+            <i class="fa-solid fa-arrow-up"></i></th>
+    {% else %}
+        <th scope="col"><a class="text-light text-decoration-none fw-bold" href="?sort=name">Название</a></th>
+    {% endif %}
+
+
+    {% if sort == '-updated_at' %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=updated_at">Последние изменения</a>
+            <i class="fa-solid fa-arrow-down"></i>
+        </th>
+    {% elif sort == "updated_at" %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-updated_at">Последние изменения</a>
+            <i class="fa-solid fa-arrow-up"></i></th>
+    {% else %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-updated_at">Последние изменения</a></th>
+    {% endif %}
+
+
+    {% if sort == '-views_count' %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=views_count">Просмотрено</a>
+            <i class="fa-solid fa-arrow-down"></i></th>
+    {% elif sort == "views_count" %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-views_count">Просмотрено</a>
+            <i class="fa-solid fa-arrow-up"></i></th>
+    {% else %}
+        <th scope="col" class="text-center">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-views_count">Просмотрено</a></th>
+    {% endif %}
+
+
+    {% if sort == 'user' %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=-user">Автор</a>
+            <i class="fa-solid fa-arrow-down"></i></th>
+    {% elif sort == '-user' %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=user">Автор</a>
+            <i class="fa-solid fa-arrow-up"></i></th>
+    {% else %}
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="?sort=user">Автор</a>
+        </th>
+    {% endif %}
+
+</tr>
+</thead>

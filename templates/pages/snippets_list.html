@@ -4,24 +4,19 @@
     <div class="row">
         <div class="col">
             <table class="table table-striped">
-                <thead class="table-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Название</th>
-
-                    <th scope="col" class="text-center">Последние изменения</th>
-                    <th scope="col" class="text-center">Просмотрено</th>
-                    <th scope="col" >Автор</th>
-                </tr>
-                </thead>
+                {% include 'pages/components/snippets_list_header.html' %}
                 <tbody>
                 {% for snippet in snippets %}
                     <tr>
-                        <td scope="row">{{ snippet.id }}</td>
-
-                        <td >
+                        <td scope="row">{{ snippet.id }}
+                        {% if snippet.access == "public" %}
+                                <i class="fa-solid fa-lock-open"></i>
+                            {% else %}
+                                <i class="fa-solid fa-lock"></i>
+                            {% endif %}</td>
+                        <td>
                             <i class="{{ snippet.icon }}"></i>
-                            <a style="color: black" href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                            <a class="text-light text-decoration-none fw-bold"  href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                         </td>
 
                         <td class="text-center">
@@ -32,12 +27,8 @@
                         <td class="text-center">
                             {{ snippet.views_count }}
                         </td>
-                        <td >
-                            {% if snippet.access == "public"%}
-                                <i class="fa-solid fa-lock-open"></i>
-                            {% else %}
-                                <i class="fa-solid fa-lock"></i>
-                            {% endif %}
+
+                        <td>
                             {{ snippet.user }}
                         </td>
                     </tr>
