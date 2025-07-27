@@ -6,17 +6,18 @@
             <table class="table table-striped">
                 {% include 'pages/components/snippets_list_header.html' %}
                 <tbody>
-                {% for snippet in snippets %}
+                {% for snippet in page_obj %}
                     <tr>
                         <td scope="row">{{ snippet.id }}
-                        {% if snippet.access == "public" %}
+                            {% if snippet.access == "public" %}
                                 <i class="fa-solid fa-lock-open"></i>
                             {% else %}
                                 <i class="fa-solid fa-lock"></i>
                             {% endif %}</td>
                         <td>
                             <i class="{{ snippet.icon }}"></i>
-                            <a class="text-light text-decoration-none fw-bold"  href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                            <a class="text-light text-decoration-none fw-bold"
+                               href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                         </td>
 
                         <td class="text-center">
@@ -46,4 +47,5 @@
             </div>
         </div>
     </div>
+    {% include "pages/components/snippets_list_paginator.html" %}
 {% endblock %}

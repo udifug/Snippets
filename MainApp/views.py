@@ -7,6 +7,7 @@ from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from MainApp.models import LANG_ICONS
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 def get_icon(lang):
@@ -60,9 +61,15 @@ def snippets_list(request):
 
     for snippet in snippets:
         snippet.icon = get_icon(snippet.lang)
+
+    paginator = Paginator(snippets,5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'pagename': "Список всех сниппетов",
-        'snippets': snippets,
+        'page_obj': page_obj,
+        'snippets':snippets,
         "sort" : sort,
     }
     return render(request, 'pages/snippets_list.html', context)
