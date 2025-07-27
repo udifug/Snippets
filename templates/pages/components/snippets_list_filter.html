@@ -10,27 +10,30 @@
                     <select name="lang" class="form-select">
                         <option value="" selected>Все языки</option>
                         {% for LANG_CHOICE in LANG_CHOICES %}
-                            <option {% if lang == LANG_CHOICE.0 %}selected{% endif %} value="{{ LANG_CHOICE.0 }}">{{ LANG_CHOICE.1 }}</option>
+                            <option {% if lang == LANG_CHOICE.0 %}selected{% endif %}
+                                    value="{{ LANG_CHOICE.0 }}">{{ LANG_CHOICE.1 }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
-                <div class="d-flex align-items-center gap-2 flex-grow-1">
-                    <label for="authorFilter" class="form-label mb-0 text-nowrap">
-                        <i class="fas fa-user me-1"></i> Автор:
-                    </label>
-                    <select name="user_id" class="form-select">
-                        <option value="" selected>Все авторы</option>
-                        {% for user in users %}
-                            <option  {% if user_id == user.id|stringformat:"s" %}selected{% endif %} value="{{ user.id }}">{{ user.username }}</option>
-                        {% endfor %}
-                    </select>
-
-                </div>
-
+                {% if snippet_my == False %}
+                    <div class="d-flex align-items-center gap-2 flex-grow-1">
+                        <label for="authorFilter" class="form-label mb-0 text-nowrap">
+                            <i class="fas fa-user me-1"></i> Автор:
+                        </label>
+                        <select name="user_id" class="form-select">
+                            <option value="" selected>Все авторы</option>
+                            {% for user in users %}
+                                <option {% if user_id == user.id|stringformat:"s" %}selected{% endif %}
+                                        value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
 
                 <div>
                     <button type="submit" class="btn btn-primary">Применить фильтры</button>
+                    <a href="?"><i class="fa-solid fa-filter-circle-xmark"></i></a>
                 </div>
 
             </div>

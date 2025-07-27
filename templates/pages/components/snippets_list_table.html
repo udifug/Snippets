@@ -7,18 +7,23 @@
             <tbody>
             {% for snippet in page_obj %}
                 <tr>
+                    {# id и значки доступа #}
                     <td scope="row">{{ snippet.id }}
                         {% if snippet.access == "public" %}
                             <i class="fa-solid fa-lock-open"></i>
                         {% else %}
                             <i class="fa-solid fa-lock"></i>
-                        {% endif %}</td>
+                        {% endif %}
+                    </td>
+
+                    {# Название и значки языков #}
                     <td>
                         <i class="{{ snippet.icon }}"></i>
                         <a class="text-light text-decoration-none fw-bold"
                            href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                     </td>
 
+                    {# Дата создания #}
                     {% if snippet_my %}
                         <td class="text-center">
                             {{ snippet.creation_date|date:'d.m.Y' }}
@@ -26,17 +31,21 @@
                         </td>
                     {% endif %}
 
+                    {# Последние изменения #}
                     <td class="text-center">
                         {{ snippet.updated_at|date:'d.m.Y' }}
                         {{ snippet.updated_at|time:'H:i ' }}
                     </td>
 
+                    {# Просмотры #}
                     <td class="text-center">{{ snippet.views_count }}</td>
 
+                    {# Автор #}
                     {% if snippet_my == False %}
                         <td>{{ snippet.user }} </td>
                     {% endif %}
 
+                    {# Изменить/Удалить #}
                     {% if snippet_my %}
                         <td class="text-center">
                             <a style="color: aliceblue" href="{% url 'snippet-edit' snippet.id %}"><i
@@ -50,9 +59,18 @@
                     {% endif %}
                 </tr>
 
+
+                {# Если страница пуста либо результаты поиска ничего не показали #}
             {% empty %}
                 <tr class="text-center">
-                    <td colspan="12">На данный момент список пуст</td>
+                    <td colspan="12">
+                        {% if empty_list == "no_result" %}
+                            Результаты не найдены по текущим критериям
+                            <a href="?">Сбросить фильтры</a>
+                        {% else %}
+                            На данный момент список пуст
+                            <a href="{% url "snippets-add" %}">Добавить новый сниппет</a>
+                        {% endif %}
                 </tr>
             {% endfor %}
 

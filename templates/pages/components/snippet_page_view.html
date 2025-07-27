@@ -1,64 +1,92 @@
-<fieldset disabled>
-        <div class="row disabled">
-            <div class="col col-5">
-                Название: <input type="text" value="{{ snippet.name }}" class="form-control">
-            </div>
-            <div class="col col-3">
-                Дата создания:<input type="text"
-                                     value="{{ snippet.creation_date|date:'d.m.Y' }} {{ snippet.creation_date|time:'H:i ' }}"
-                                     class="form-control">
-            </div>
-            <div class="col col-3">
-                Дата изменения:<input type="text"
-                                      value="{{ snippet.updated_at|date:'d.m.Y' }} {{ snippet.updated_at|time:'H:i ' }}"
-                                      class="form-control">
-            </div>
-            <div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col">
-                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
-                        <p>
-                            {{ snippet.code }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
-                        <p>
-                            {{ snippet.description }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            {% if request.user.is_authenticated %}
-                <div class="row">
-                    <div class="col">
-                        <a href="{% url 'snippet-edit' snippet.id %}">
-                            <button type="button" class="btn btn-warning">Изменить</button>
-                        </a>
+<div class="container my-4">
+    <div class="position-relative mb-4">
+        <a href="{% url 'snippets-list' %}" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y">
+            <i class="bi bi-arrow-left"></i> Назад</a>
 
-                        <a href="{% url 'snippet-delete' snippet.id %}">
-                            <button type="button" class="btn btn-danger">Удалить</button>
-                        </a>
-                        {% if errors %}
-                            <div class="alert alert-danger" role="alert">
-                                <ul>
-                                    {% for error in errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </ul>
-                            </div>
+        <div class="col text-center h4">Информация о сниппете</div>
+
+        {% if request.user.is_authenticated %}
+            <div class="position-absolute end-0 top-50 translate-middle-y">
+                <div class="btn-group" role="group">
+                    <a href="{% url 'snippet-edit' snippet.id %}" class="btn btn-outline-primary">Изменить</a>
+                    <a href="{% url 'snippet-delete' snippet.id %}" class="btn btn-outline-danger">Удалить</a>
+                </div>
+                {% if errors %}
+                    <div class="alert alert-danger p-2 mb-0" role="alert" style="min-width: 250px;">
+                        <ul class="mb-0 ps-3">
+                            {% for error in errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="info-row">
+                        <span>Название:</span>
+                        <span>{{ snippet.name }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Дата создания:</span>
+                        <span>{{ snippet.creation_date|date:'d.m.Y' }} {{ snippet.creation_date|time:'H:i' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Последние изменения:</span>
+                        <span>{{ snippet.updated_at|date:'d.m.Y' }} {{ snippet.updated_at|time:'H:i ' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Доступ:</span>
+                        {% if snippet.access == "public" %}
+                            <span>Открытый</span>
+                            <i class="fa-solid fa-lock-open"></i>
+                        {% else %}
+                            <span>Закрытый</span>
+                            <i class="fa-solid fa-lock"></i>
                         {% endif %}
+                    </div>
 
+                    <div class="info-row">
+                        <span>Автор:</span>
+                        <span>{{ snippet.user }}</span>
                     </div>
                 </div>
-            {% endif %}
-            <div class="d-flex justify-content-end">
-                <i class="text-muted">Просмотрено: {{ snippet.views_count }}</i></div>
-        </div>
-    </fieldset>
+            </div>
 
+            <div class="card mt-4">
+                <div class="card-header">
+                    Описание сниппета
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ snippet.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Код сниппета <i class="{{ snippet.icon }}"></i></h5>
+                        <button class="btn btn-sm btn-outline-secondary copy-btn" title="Скопировать код">
+                            <i class="bi bi-clipboard"></i> Скопировать
+                        </button>
+                    </div>
+                    {{ snippet.code }}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <i class="text-muted">Просмотрено: {{ snippet.views_count }}</i></div>
+    </div>
+</div>

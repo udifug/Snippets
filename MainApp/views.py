@@ -48,7 +48,7 @@ def snippet_create(request):
             return render(request, 'pages/snippet_add_or_edit.html', context)
 
 
-def snippets_list(request,snippet_my):
+def snippets_list(request, snippet_my):
     if snippet_my:
         if not request.user.is_authenticated:
             return HttpResponse('Unauthorized', status=401)
@@ -72,6 +72,8 @@ def snippets_list(request,snippet_my):
     if user_id:
         snippets = snippets.filter(user__id=user_id)
 
+    filtering = any([lang, user_id])
+
     # sort
     sort = request.GET.get("sort")
     if sort:
@@ -85,6 +87,11 @@ def snippets_list(request,snippet_my):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    if filtering and not page_obj.object_list:
+        empty_list = 'no_result'
+    else:
+        empty_list = 'no_data'
+
     context = {
         'pagename': pagename,
         'page_obj': page_obj,
@@ -94,21 +101,23 @@ def snippets_list(request,snippet_my):
         "user_id": user_id,
         "LANG_CHOICES": LANG_CHOICES,
         "users": User.objects.all(),
-        'snippet_my' : snippet_my
+        'snippet_my': snippet_my,
+        'empty_list': empty_list
     }
     return render(request, 'pages/snippets_list.html', context)
 
 
-def snippet_page(request, id):
+def snippet_detail(request, id):
     snippet = Snippet.objects.prefetch_related('comments').get(id=id)
     snippet.views_count = F("views_count") + 1
     snippet.save(update_fields=['views_count'])
     snippet.refresh_from_db()
     comments_form = CommentForm()
     comments = snippet.comments.all()
+    snippet.icon = get_icon(snippet.lang)
+
 
     context = {
-        'pagename': "Информация о сниппете",
         'snippet': snippet,
         'comments': comments,
         'comments_form': comments_form
@@ -116,6 +125,7 @@ def snippet_page(request, id):
     return render(request, 'pages/snippet_detail.html', context)
 
 
+@login_required
 def comment_add(request):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
