@@ -1,13 +1,14 @@
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
 from django.http import Http404, HttpResponseForbidden
-from django.db.models import F , Q
+from django.db.models import F, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
-from MainApp.models import LANG_ICONS
+from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 
 def get_icon(lang):
@@ -55,6 +56,15 @@ def snippets_list(request):
     else:
         snippets = Snippet.objects.filter(access="public")
 
+    # filter
+    lang = request.GET.get("lang")
+    if lang:
+        snippets = snippets.filter(lang=lang)
+    user_id = request.GET.get("user_id")
+    if user_id:
+        snippets = snippets.filter(user__id=user_id)
+
+    # sort
     sort = request.GET.get("sort")
     if sort:
         snippets = snippets.order_by(sort)
@@ -62,15 +72,20 @@ def snippets_list(request):
     for snippet in snippets:
         snippet.icon = get_icon(snippet.lang)
 
-    paginator = Paginator(snippets,5)
+    # paginator
+    paginator = Paginator(snippets, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
         'pagename': "Список всех сниппетов",
         'page_obj': page_obj,
-        'snippets':snippets,
-        "sort" : sort,
+        'snippets': snippets,
+        "sort": sort,
+        "lang": lang,
+        "user_id": user_id,
+        "LANG_CHOICES": LANG_CHOICES,
+        "users": User.objects.all()
     }
     return render(request, 'pages/snippets_list.html', context)
 
@@ -97,16 +112,16 @@ def snippet_page(request, id):
     comments = snippet.comments.all()
 
     context = {
-        'pagename' : "Информация о сниппете",
-        'snippet' : snippet,
-        'comments' : comments,
-        'comments_form' : comments_form
+        'pagename': "Информация о сниппете",
+        'snippet': snippet,
+        'comments': comments,
+        'comments_form': comments_form
     }
     return render(request, 'pages/snippet_detail.html', context)
 
 
 def comment_add(request):
-    if request.method =="POST":
+    if request.method == "POST":
         comment_form = CommentForm(request.POST)
         snippet_id = request.POST.get("snippet_id")
         snippet = get_object_or_404(Snippet, id=snippet_id)
@@ -167,6 +182,7 @@ def snippet_edit(request, id):
             }
             return render(request, 'pages/snippet_add_or_edit.html', context)
 
+
 def user_registration(request):
     if request.method == "GET":
         user_form = UserRegistrationForm()
@@ -188,6 +204,7 @@ def user_registration(request):
             }
             return render(request, 'pages/user_registration.html', context)
 
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -208,4 +225,3 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect('home')
-

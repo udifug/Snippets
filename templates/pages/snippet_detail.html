@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% include "pages/components/snippet_page_view.html" %} {# отображение сниппета #}
+    {# отображение сниппета #}
+    {% include "pages/components/snippet_page_view.html" %}
 
+    {# отображение добавления комментария для авторизованных #}
     {% if request.user.is_authenticated %}
-    {% include "pages/components/comment_form.html" %} {# отображение добавления коментария #}
+    {% include "pages/components/comment_form.html" %}
     {% endif %}
 
-    {% include "pages/components/comments_view.html" %} {# отображение всех коментариев #}
+    {# отображение всех комментариев #}
+    {% include "pages/components/comments_view.html" %}
 
 {% endblock %}

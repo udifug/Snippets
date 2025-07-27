@@ -22,7 +22,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    <li class="page-item{% if not page_obj.has_next %}disabled{% endif %}">
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
                         <a class="page-link"
                            {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% endif %}>Следующая</a>
                     </li>
