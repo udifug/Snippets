@@ -1,6 +1,6 @@
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404, HttpResponse
 from django.db.models import F, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
@@ -48,13 +48,21 @@ def snippet_create(request):
             return render(request, 'pages/snippet_add_or_edit.html', context)
 
 
-def snippets_list(request):
-    if request.user.is_authenticated:
-        snippets = Snippet.objects.filter(
-            Q(access="public") | Q(user=request.user)
-        ).distinct()
+def snippets_list(request,snippet_my):
+    if snippet_my:
+        if not request.user.is_authenticated:
+            return HttpResponse('Unauthorized', status=401)
+        snippets = Snippet.objects.filter(user=request.user)
+        pagename = 'Мои сниппеты'
+
     else:
-        snippets = Snippet.objects.filter(access="public")
+        if request.user.is_authenticated:
+            snippets = Snippet.objects.filter(
+                Q(access="public") | Q(user=request.user)
+            )
+        else:
+            snippets = Snippet.objects.filter(access="public")
+        pagename = "Список всех сниппетов"
 
     # filter
     lang = request.GET.get("lang")
@@ -78,29 +86,17 @@ def snippets_list(request):
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'pagename': "Список всех сниппетов",
+        'pagename': pagename,
         'page_obj': page_obj,
         'snippets': snippets,
         "sort": sort,
         "lang": lang,
         "user_id": user_id,
         "LANG_CHOICES": LANG_CHOICES,
-        "users": User.objects.all()
+        "users": User.objects.all(),
+        'snippet_my' : snippet_my
     }
     return render(request, 'pages/snippets_list.html', context)
-
-
-@login_required
-def user_list(request):
-    snippets = Snippet.objects.filter(user=request.user)
-
-    for snippet in snippets:
-        snippet.icon = get_icon(snippet.lang)
-    context = {
-        'pagename': "Мои сниппеты",
-        'snippets': snippets
-    }
-    return render(request, 'pages/snippets_user_list.html', context)
 
 
 def snippet_page(request, id):
@@ -147,7 +143,7 @@ def snippet_delete(request, id):
         return render(request, 'pages/snippet_detail.html', context)
 
     snippet.delete()
-    return redirect("snippets-user-list")
+    return redirect("snippets-mylist")
 
 
 @login_required
@@ -174,7 +170,7 @@ def snippet_edit(request, id):
         form = SnippetForm(request.POST, instance=snippet)
         if form.is_valid():
             form.save()
-            return redirect("snippets-user-list")
+            return redirect("snippets-mylist")
         else:
             context = {
                 'form': form,

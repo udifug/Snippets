@@ -10,7 +10,7 @@ LANG_CHOICES = [
 
 LANG_ICONS = {
     "python": "fa-brands fa-python",
-    "cpp": "fa-solid fa-code",
+    "cpp": "fa-solid fa-c",
     "java": "fa-brands fa-java",
     "javascript": "fa-brands fa-js",
 }
