@@ -1,3 +1,4 @@
+{% load my_tags %}
 <div class="row">
     <div class="col">
         <table class="table table-striped">
@@ -18,7 +19,7 @@
 
                     {# Название и значки языков #}
                     <td>
-                        <i class="{{ snippet.icon }}"></i>
+                        <i class="{{ snippet.lang | get_lang_icon }}"></i>
                         <a class="text-light text-decoration-none fw-bold"
                            href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
                     </td>

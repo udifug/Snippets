@@ -11,10 +11,6 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
 
-def get_icon(lang):
-    return LANG_ICONS.get(lang)
-
-
 def index_page(request):
     context = {
         'pagename': 'Главное меню'
@@ -79,8 +75,6 @@ def snippets_list(request, snippet_my):
     if sort:
         snippets = snippets.order_by(sort)
 
-    for snippet in snippets:
-        snippet.icon = get_icon(snippet.lang)
 
     # paginator
     paginator = Paginator(snippets, 5)
@@ -137,7 +131,6 @@ def snippet_detail(request, id):
     snippet.refresh_from_db()
     comments_form = CommentForm()
     comments = snippet.comments.all()
-    snippet.icon = get_icon(snippet.lang)
 
     context = {
         'snippet': snippet,
