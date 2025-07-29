@@ -1,7 +1,7 @@
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
 from django.http import Http404, HttpResponse
-from django.db.models import F, Q, Count
+from django.db.models import F, Q, Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
@@ -109,6 +109,26 @@ def snippets_list(request, snippet_my):
     }
     return render(request, 'pages/snippets_list.html', context)
 
+def snippets_stats(request):
+    general_stats = Snippet.objects.aggregate(
+        total_snippets = Count('id'),
+        public_snippets = Count('id', filter=Q(access='public')),
+        average_views = Avg('views_count'),
+
+    )
+    if general_stats['average_views'] is not None:
+        general_stats['average_views'] = int(round(general_stats['average_views']))
+
+    top_users = User.objects.annotate(num_snippets=Count('snippet')).order_by('-num_snippets')[:3]
+
+    context ={
+        "pagename": 'Статистика по сниппетам',
+        'general_stats' : general_stats,
+        'top_five' : Snippet.objects.order_by('-views_count')[:5],
+        'top_users' : top_users
+
+    }
+    return render(request, 'pages/snippets_stats.html',context)
 
 def snippet_detail(request, id):
     snippet = Snippet.objects.prefetch_related('comments').get(id=id)
