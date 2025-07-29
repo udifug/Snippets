@@ -1,7 +1,7 @@
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
 from django.http import Http404, HttpResponse
-from django.db.models import F, Q
+from django.db.models import F, Q, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
@@ -92,6 +92,9 @@ def snippets_list(request, snippet_my):
     else:
         empty_list = 'no_data'
 
+    users = User.objects.annotate(num_snippets=Count('snippet', filter=Q(snippet__access='public'))).filter(
+        num_snippets__gt=0).order_by("-num_snippets")
+
     context = {
         'pagename': pagename,
         'page_obj': page_obj,
@@ -100,7 +103,7 @@ def snippets_list(request, snippet_my):
         "lang": lang,
         "user_id": user_id,
         "LANG_CHOICES": LANG_CHOICES,
-        "users": User.objects.all(),
+        "users": users,
         'snippet_my': snippet_my,
         'empty_list': empty_list
     }
@@ -115,7 +118,6 @@ def snippet_detail(request, id):
     comments_form = CommentForm()
     comments = snippet.comments.all()
     snippet.icon = get_icon(snippet.lang)
-
 
     context = {
         'snippet': snippet,

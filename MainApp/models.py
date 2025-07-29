@@ -25,17 +25,20 @@ class Snippet(models.Model):
     lang = models.CharField(max_length=30, choices=LANG_CHOICES)
     code = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     views_count = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
     access = models.CharField(max_length=30, choices=ACCESS_CHOICES,default='public')
 
-    def __str__(self):
-        return self.name
+    def __repr__(self):
+        return f"S: {self.name}|{self.lang} views:{self.views_count} public:{self.access} user:{self.user}"
 
 class Comment(models.Model):
     text = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
     snippet = models.ForeignKey(to=Snippet, on_delete=models.CASCADE, related_name="comments")
+
+    def __repr__(self):
+        return f"C: {self.text[:10]} author:{self.author} sn: {self.snippet.name}"

@@ -3,85 +3,87 @@
     {# id #}
     {% if sort == '-id' %}
         <th scope="col">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=id">ID</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='id' %}">ID</a>
             <i class="fa-solid fa-arrow-down"></i></th>
     {% elif sort == 'id' %}
         <th scope="col">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-id">ID</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='-id' %}">ID</a>
             <i class="fa-solid fa-arrow-up"></i></th>
     {% else %}
         <th scope="col">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=id">ID</a></th>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='id' %}">ID</a></th>
     {% endif %}
 
     {# Название #}
     {% if sort == 'name' %}
         <th scope="col">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-name">Название</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-name" %}">Название</a>
             <i class="fa-solid fa-arrow-down"></i></th>
     {% elif sort == '-name' %}
-        <th scope="col"><a class="text-light text-decoration-none fw-bold" href="?sort=name">Название</a>
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="name" %}">Название</a>
             <i class="fa-solid fa-arrow-up"></i></th>
     {% else %}
-        <th scope="col"><a class="text-light text-decoration-none fw-bold" href="?sort=name">Название</a></th>
+        <th scope="col">
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="name" %}">Название</a></th>
     {% endif %}
 
     {# Дата создания #}
     {% if snippet_my %}
         {% if sort == '-creation_date' %}
             <th scope="col" class="text-center">
-                <a class="text-light text-decoration-none fw-bold" href="?sort=creation_date">Дата создания</a>
+                <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='creation_date' %}">Дата создания</a>
                 <i class="fa-solid fa-arrow-down"></i></th>
         {% elif sort == 'creation_date' %}
             <th scope="col" class="text-center">
-                <a class="text-light text-decoration-none fw-bold" href="?sort=-creation_date">Дата создания</a>
+                <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='-creation_date' %}">Дата создания</a>
                 <i class="fa-solid fa-arrow-up"></i></th>
         {% else %}
             <th scope="col" class="text-center">
-                <a class="text-light text-decoration-none fw-bold" href="?sort=-creation_date">Дата создания</a></th>
+                <a class="text-light text-decoration-none fw-bold" href="{% querystring sort='-creation_date' %}">Дата создания</a></th>
         {% endif %}
     {% endif %}
 
     {# Последние изменения #}
     {% if sort == '-updated_at' %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=updated_at">Последние изменения</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="updated_at" %}">Последние изменения</a>
             <i class="fa-solid fa-arrow-down"></i></th>
     {% elif sort == "updated_at" %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-updated_at">Последние изменения</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-updated_at" %}">Последние изменения</a>
             <i class="fa-solid fa-arrow-up"></i></th>
     {% else %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-updated_at">Последние изменения</a></th>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-updated_at" %}">Последние изменения</a></th>
     {% endif %}
 
     {# Просмотры #}
     {% if sort == '-views_count' %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=views_count">Просмотрено</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="views_count" %}">Просмотрено</a>
             <i class="fa-solid fa-arrow-down"></i></th>
     {% elif sort == "views_count" %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-views_count">Просмотрено</a>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-views_count" %}">Просмотрено</a>
             <i class="fa-solid fa-arrow-up"></i></th>
     {% else %}
         <th scope="col" class="text-center">
-            <a class="text-light text-decoration-none fw-bold" href="?sort=-views_count">Просмотрено</a></th>
+            <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-views_count" %}">Просмотрено</a></th>
     {% endif %}
 
     {# Автор #}
     {% if snippet_my == False %}
         {% if sort == 'user' %}
             <th scope="col">
-                <a class="text-light text-decoration-none fw-bold" href="?sort=-user">Автор</a>
+                <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="-user" %}">Автор</a>
                 <i class="fa-solid fa-arrow-down"></i></th>
         {% elif sort == '-user' %}
             <th scope="col">
-                <a class="text-light text-decoration-none fw-bold" href="?sort=user">Автор</a>
+                <a class="text-light text-decoration-none fw-bold" href="{% querystring sort="user" %}">Автор</a>
                 <i class="fa-solid fa-arrow-up"></i></th>
         {% else %}
-            <th scope="col"><a class="text-light text-decoration-none fw-bold" href="?sort=user">Автор</a></th>
+            <th scope="col"><a class="text-light text-decoration-none fw-bold" href="{% querystring sort="user" %}">Автор</a></th>
         {% endif %}
     {% endif %}
 

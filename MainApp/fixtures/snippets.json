@@ -1,0 +1,561 @@
+[
+  {
+    "model": "MainApp.snippet",
+    "pk": 1,
+    "fields": {
+      "name": "Python: Hello World",
+      "lang": "python",
+      "code": "print('Hello, World!')",
+      "creation_date": "2025-06-30T10:00:00.000Z",
+      "views_count": 120,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 2,
+    "fields": {
+      "name": "Python: List Comprehension",
+      "lang": "python",
+      "code": "squares = [x**2 for x in range(10)]",
+      "creation_date": "2025-06-30T10:05:00.000Z",
+      "views_count": 80,
+      "access": "private",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 3,
+    "fields": {
+      "name": "Python: Dictionary Iteration",
+      "lang": "python",
+      "code": "my_dict = {'a': 1, 'b': 2}\nfor key, value in my_dict.items():\n    print(f'{key}: {value}')",
+      "creation_date": "2025-06-30T10:10:00.000Z",
+      "views_count": 65,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 4,
+    "fields": {
+      "name": "Python: File Reading",
+      "lang": "python",
+      "code": "with open('file.txt', 'r') as f:\n    content = f.read()",
+      "creation_date": "2025-06-30T10:15:00.000Z",
+      "views_count": 90,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 5,
+    "fields": {
+      "name": "Python: Function with Args",
+      "lang": "python",
+      "code": "def greet(name):\n    return f'Hello, {name}!'",
+      "creation_date": "2025-06-30T10:20:00.000Z",
+      "views_count": 75,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 6,
+    "fields": {
+      "name": "Python: Class Definition",
+      "lang": "python",
+      "code": "class MyClass:\n    def __init__(self, value):\n        self.value = value",
+      "creation_date": "2025-06-30T10:25:00.000Z",
+      "views_count": 50,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 7,
+    "fields": {
+      "name": "Python: Exception Handling",
+      "lang": "python",
+      "code": "try:\n    result = 1 / 0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
+      "creation_date": "2025-06-30T10:30:00.000Z",
+      "views_count": 60,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 8,
+    "fields": {
+      "name": "Python: Lambda Function",
+      "lang": "python",
+      "code": "add_one = lambda x: x + 1",
+      "creation_date": "2025-06-30T10:35:00.000Z",
+      "views_count": 45,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 9,
+    "fields": {
+      "name": "Python: Decorator Example",
+      "lang": "python",
+      "code": "def my_decorator(func):\n    def wrapper():\n        print('Something is happening before the function is called.')\n        func()\n        print('Something is happening after the function is called.')\n    return wrapper\n\n@my_decorator\ndef say_hello():\n    print('Hello!')",
+      "creation_date": "2025-06-30T10:40:00.000Z",
+      "views_count": 70,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 10,
+    "fields": {
+      "name": "Python: Regular Expression",
+      "lang": "python",
+      "code": "import re\npattern = r'\\d+'\ntext = 'There are 123 numbers.'\nmatches = re.findall(pattern, text)",
+      "creation_date": "2025-06-30T10:45:00.000Z",
+      "views_count": 55,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 11,
+    "fields": {
+      "name": "Python: Private Function",
+      "lang": "python",
+      "code": "def _private_func():\n    print('This is a private function.')",
+      "creation_date": "2025-06-30T10:50:00.000Z",
+      "views_count": 10,
+      "access": "private",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 12,
+    "fields": {
+      "name": "Python: Secret Key Generator",
+      "lang": "python",
+      "code": "import os\nsecret_key = os.urandom(24)",
+      "creation_date": "2025-06-30T10:55:00.000Z",
+      "views_count": 5,
+      "access": "public",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 13,
+    "fields": {
+      "name": "Python: Internal Data Processing",
+      "lang": "python",
+      "code": "data = [1, 2, 3, 4, 5]\nprocessed_data = [x * 2 for x in data]",
+      "creation_date": "2025-06-30T11:00:00.000Z",
+      "views_count": 12,
+      "access": "private",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 14,
+    "fields": {
+      "name": "Python: Configuration Settings",
+      "lang": "python",
+      "code": "CONFIG = {\n    'DEBUG': True,\n    'PORT': 8000\n}",
+      "creation_date": "2025-06-30T11:05:00.000Z",
+      "views_count": 8,
+      "access": "private",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 15,
+    "fields": {
+      "name": "Python: Testing Utility",
+      "lang": "python",
+      "code": "def test_function():\n    assert True",
+      "creation_date": "2025-06-30T11:10:00.000Z",
+      "views_count": 7,
+      "access": "private",
+      "user": 1
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 16,
+    "fields": {
+      "name": "JavaScript: Console Log",
+      "lang": "javascript",
+      "code": "console.log('Hello from JS!');",
+      "creation_date": "2025-06-30T11:15:00.000Z",
+      "views_count": 150,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 17,
+    "fields": {
+      "name": "JavaScript: Array Map",
+      "lang": "javascript",
+      "code": "const numbers = [1, 2, 3];\nconst doubled = numbers.map(num => num * 2);",
+      "creation_date": "2025-06-30T11:20:00.000Z",
+      "views_count": 110,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 18,
+    "fields": {
+      "name": "JavaScript: Fetch API",
+      "lang": "javascript",
+      "code": "fetch('https://api.example.com/data')\n  .then(response => response.json())\n  .then(data => console.log(data));",
+      "creation_date": "2025-06-30T11:25:00.000Z",
+      "views_count": 95,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 19,
+    "fields": {
+      "name": "JavaScript: DOM Manipulation",
+      "lang": "javascript",
+      "code": "document.getElementById('myElement').textContent = 'New Text';",
+      "creation_date": "2025-06-30T11:30:00.000Z",
+      "views_count": 130,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 20,
+    "fields": {
+      "name": "JavaScript: Event Listener",
+      "lang": "javascript",
+      "code": "document.getElementById('myButton').addEventListener('click', () => {\n  alert('Button clicked!');\n});",
+      "creation_date": "2025-06-30T11:35:00.000Z",
+      "views_count": 105,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 21,
+    "fields": {
+      "name": "JavaScript: Async Await",
+      "lang": "javascript",
+      "code": "async function fetchData() {\n  const response = await fetch('https://api.example.com/data');\n  const data = await response.json();\n  console.log(data);\n}",
+      "creation_date": "2025-06-30T11:40:00.000Z",
+      "views_count": 85,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 22,
+    "fields": {
+      "name": "JavaScript: Local Storage",
+      "lang": "javascript",
+      "code": "localStorage.setItem('username', 'JohnDoe');\nconst user = localStorage.getItem('username');",
+      "creation_date": "2025-06-30T11:45:00.000Z",
+      "views_count": 70,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 23,
+    "fields": {
+      "name": "JavaScript: Set Timeout",
+      "lang": "javascript",
+      "code": "setTimeout(() => {\n  console.log('Delayed message');\n}, 1000);",
+      "creation_date": "2025-06-30T11:50:00.000Z",
+      "views_count": 60,
+      "access": "public",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 24,
+    "fields": {
+      "name": "JavaScript: Destructuring Assignment",
+      "lang": "javascript",
+      "code": "const person = { name: 'Alice', age: 30 };\nconst { name, age } = person;",
+      "creation_date": "2025-06-30T11:55:00.000Z",
+      "views_count": 75,
+      "access": "private",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 25,
+    "fields": {
+      "name": "JavaScript: Spread Operator",
+      "lang": "javascript",
+      "code": "const arr1 = [1, 2];\nconst arr2 = [...arr1, 3, 4];",
+      "creation_date": "2025-06-30T12:00:00.000Z",
+      "views_count": 68,
+      "access": "private",
+      "user": 2
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 26,
+    "fields": {
+      "name": "C++: Hello World",
+      "lang": "cpp",
+      "code": "#include <iostream>\nint main() {\n    std::cout << \"Hello, C++!\" << std::endl;\n    return 0;\n}",
+      "creation_date": "2025-06-30T12:05:00.000Z",
+      "views_count": 200,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 27,
+    "fields": {
+      "name": "C++: Basic Loop",
+      "lang": "cpp",
+      "code": "#include <iostream>\nint main() {\n    for (int i = 0; i < 5; ++i) {\n        std::cout << i << std::endl;\n    }\n    return 0;\n}",
+      "creation_date": "2025-06-30T12:10:00.000Z",
+      "views_count": 180,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 28,
+    "fields": {
+      "name": "C++: Function Example",
+      "lang": "cpp",
+      "code": "#include <iostream>\nint add(int a, int b) {\n    return a + b;\n}\nint main() {\n    std::cout << add(5, 3) << std::endl;\n    return 0;\n}",
+      "creation_date": "2025-06-30T12:15:00.000Z",
+      "views_count": 170,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 29,
+    "fields": {
+      "name": "C++: Vector Initialization",
+      "lang": "cpp",
+      "code": "#include <vector>\n#include <iostream>\nint main() {\n    std::vector<int> numbers = {1, 2, 3, 4, 5};\n    for (int num : numbers) {\n        std::cout << num << \" \";\n    }\n    std::cout << std::endl;\n    return 0;\n}",
+      "creation_date": "2025-06-30T12:20:00.000Z",
+      "views_count": 160,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 31,
+    "fields": {
+      "name": "Java: Basic Class",
+      "lang": "java",
+      "code": "public class MyClass {\n    public static void main(String[] args) {\n        System.out.println(\"Hello from Java!\");\n    }\n}",
+      "creation_date": "2025-06-30T12:30:00.000Z",
+      "views_count": 190,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 32,
+    "fields": {
+      "name": "Java: If-Else Statement",
+      "lang": "java",
+      "code": "public class CheckNumber {\n    public static void main(String[] args) {\n        int num = 10;\n        if (num > 5) {\n            System.out.println(\"Number is greater than 5\");\n        } else {\n            System.out.println(\"Number is not greater than 5\");\n        }\n    }\n}",
+      "creation_date": "2025-06-30T12:35:00.000Z",
+      "views_count": 155,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 34,
+    "fields": {
+      "name": "Python: Private Data Filter",
+      "lang": "python",
+      "code": "private_data = [{'id': 1, 'status': 'private'}, {'id': 2, 'status': 'public'}]\nfiltered_data = [item for item in private_data if item['status'] == 'private']",
+      "creation_date": "2025-06-30T12:45:00.000Z",
+      "views_count": 220,
+      "access": "public",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 35,
+    "fields": {
+      "name": "JavaScript: Internal Config",
+      "lang": "javascript",
+      "code": "const config = { debugMode: true, apiEndpoint: '/internal/api' };",
+      "creation_date": "2025-06-30T12:50:00.000Z",
+      "views_count": 5,
+      "access": "private",
+      "user": 3
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 36,
+    "fields": {
+      "name": "Java: Basic Class",
+      "lang": "java",
+      "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}",
+      "creation_date": "2025-06-30T12:55:00.000Z",
+      "views_count": 90,
+      "access": "public",
+      "user": 4
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 37,
+    "fields": {
+      "name": "Java: For Loop",
+      "lang": "java",
+      "code": "for (int i = 0; i < 5; i++) {\n    System.out.println(i);\n}",
+      "creation_date": "2025-06-30T13:00:00.000Z",
+      "views_count": 85,
+      "access": "public",
+      "user": 4
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 38,
+    "fields": {
+      "name": "C++: Console Output",
+      "lang": "cpp",
+      "code": "#include <iostream>\nint main() {\n    std::cout << \"Hello, C++ again!\" << std::endl;\n    return 0;\n}",
+      "creation_date": "2025-06-30T13:05:00.000Z",
+      "views_count": 70,
+      "access": "public",
+      "user": 5
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 39,
+    "fields": {
+      "name": "C++: Conditional Statement",
+      "lang": "cpp",
+      "code": "#include <iostream>\nint main() {\n    int x = 10;\n    if (x > 5) {\n        std::cout << \"X is greater than 5\" << std::endl;\n    }\n    return 0;\n}",
+      "creation_date": "2025-06-30T13:10:00.000Z",
+      "views_count": 65,
+      "access": "public",
+      "user": 5
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 40,
+    "fields": {
+      "name": "JavaScript: Simple Output",
+      "lang": "javascript",
+      "code": "alert(\"Hello, JavaScript from PHP's replacement!\");",
+      "creation_date": "2025-06-30T13:15:00.000Z",
+      "views_count": 55,
+      "access": "public",
+      "user": 6
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 41,
+    "fields": {
+      "name": "JavaScript: Array Example",
+      "lang": "javascript",
+      "code": "const colors = [\"red\", \"green\", \"blue\"];\nconsole.log(colors);",
+      "creation_date": "2025-06-30T13:20:00.000Z",
+      "views_count": 50,
+      "access": "public",
+      "user": 6
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 42,
+    "fields": {
+      "name": "Python: Print Statement",
+      "lang": "python",
+      "code": "print('Hello, Python from Ruby replacement!')",
+      "creation_date": "2025-06-30T13:25:00.000Z",
+      "views_count": 45,
+      "access": "public",
+      "user": 7
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 43,
+    "fields": {
+      "name": "Python: Class Example",
+      "lang": "python",
+      "code": "class Greeter:\n  def __init__(self, name):\n    self.name = name\n  def say_hi(self):\n    print(f'Hi {self.name}')",
+      "creation_date": "2025-06-30T13:30:00.000Z",
+      "views_count": 40,
+      "access": "public",
+      "user": 7
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 44,
+    "fields": {
+      "name": "Java: Another Hello World",
+      "lang": "java",
+      "code": "public class AnotherHelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, another Java world!\");\n    }\n}",
+      "creation_date": "2025-06-30T13:35:00.000Z",
+      "views_count": 35,
+      "access": "public",
+      "user": 8
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 45,
+    "fields": {
+      "name": "Java: Basic Function",
+      "lang": "java",
+      "code": "public class Adder {\n    public int add(int a, int b) {\n        return a + b;\n    }\n    public static void main(String[] args) {\n        Adder adder = new Adder();\n        System.out.println(adder.add(5, 3));\n    }\n}",
+      "creation_date": "2025-06-30T13:40:00.000Z",
+      "views_count": 30,
+      "access": "private",
+      "user": 8
+    }
+  }
+]

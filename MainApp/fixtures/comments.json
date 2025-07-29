@@ -1,0 +1,482 @@
+[
+  {
+    "model": "MainApp.comment",
+    "pk": 1,
+    "fields": {
+      "text": "Отличный способ начать! Просто и понятно.",
+      "creation_date": "2025-07-01T09:00:00.000Z",
+      "author": 1,
+      "snippet": 1
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 2,
+    "fields": {
+      "text": "Мне очень помог этот сниппет. Спасибо!",
+      "creation_date": "2025-07-01T09:05:00.000Z",
+      "author": 2,
+      "snippet": 1
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 3,
+    "fields": {
+      "text": "Пригодится для быстрой проверки.",
+      "creation_date": "2025-07-01T09:10:00.000Z",
+      "author": 3,
+      "snippet": 1
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 4,
+    "fields": {
+      "text": "Обожаю генераторы списков, это так лаконично!",
+      "creation_date": "2025-07-01T09:15:00.000Z",
+      "author": 1,
+      "snippet": 2
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 5,
+    "fields": {
+      "text": "Лучший способ создания списков в Python.",
+      "creation_date": "2025-07-01T09:20:00.000Z",
+      "author": 4,
+      "snippet": 2
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 6,
+    "fields": {
+      "text": "Всегда забываю синтаксис, этот пример очень кстати.",
+      "creation_date": "2025-07-01T09:25:00.000Z",
+      "author": 5,
+      "snippet": 3
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 7,
+    "fields": {
+      "text": "Функция items() очень удобна.",
+      "creation_date": "2025-07-01T09:30:00.000Z",
+      "author": 6,
+      "snippet": 3
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 8,
+    "fields": {
+      "text": "Стандартная практика, но всегда полезно иметь под рукой.",
+      "creation_date": "2025-07-01T09:35:00.000Z",
+      "author": 7,
+      "snippet": 4
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 9,
+    "fields": {
+      "text": "Не забывайте закрывать файлы!",
+      "creation_date": "2025-07-01T09:40:00.000Z",
+      "author": 8,
+      "snippet": 4
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 10,
+    "fields": {
+      "text": "Простой, но мощный пример.",
+      "creation_date": "2025-07-01T09:45:00.000Z",
+      "author": 1,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 11,
+    "fields": {
+      "text": "Начинал с этого, хорошие воспоминания.",
+      "creation_date": "2025-07-01T09:50:00.000Z",
+      "author": 2,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 12,
+    "fields": {
+      "text": "Базовый, но необходимый.",
+      "creation_date": "2025-07-01T09:55:00.000Z",
+      "author": 3,
+      "snippet": 6
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 13,
+    "fields": {
+      "text": "Хороший пример __init__.",
+      "creation_date": "2025-07-01T10:00:00.000Z",
+      "author": 4,
+      "snippet": 6
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 14,
+    "fields": {
+      "text": "Важно помнить об обработке исключений.",
+      "creation_date": "2025-07-01T10:05:00.000Z",
+      "author": 1,
+      "snippet": 7
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 15,
+    "fields": {
+      "text": "Полезно для избежания крашей.",
+      "creation_date": "2025-07-01T10:10:00.000Z",
+      "author": 5,
+      "snippet": 7
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 16,
+    "fields": {
+      "text": "Лямбды - сила Python!",
+      "creation_date": "2025-07-01T10:15:00.000Z",
+      "author": 6,
+      "snippet": 8
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 17,
+    "fields": {
+      "text": "Очень удобно для простых функций.",
+      "creation_date": "2025-07-01T10:20:00.000Z",
+      "author": 7,
+      "snippet": 8
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 18,
+    "fields": {
+      "text": "Декораторы всегда сбивают с толку, но этот пример понятен.",
+      "creation_date": "2025-07-01T10:25:00.000Z",
+      "author": 8,
+      "snippet": 9
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 19,
+    "fields": {
+      "text": "Отличный пример применения декоратора.",
+      "creation_date": "2025-07-01T10:30:00.000Z",
+      "author": 1,
+      "snippet": 9
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 20,
+    "fields": {
+      "text": "Регулярные выражения - мощный инструмент.",
+      "creation_date": "2025-07-01T10:35:00.000Z",
+      "author": 2,
+      "snippet": 10
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 21,
+    "fields": {
+      "text": "Хорошо для парсинга текста.",
+      "creation_date": "2025-07-01T10:40:00.000Z",
+      "author": 3,
+      "snippet": 10
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 22,
+    "fields": {
+      "text": "Просто 'Hello, World!' - классика!",
+      "creation_date": "2025-07-01T10:45:00.000Z",
+      "author": 2,
+      "snippet": 16
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 23,
+    "fields": {
+      "text": "С этого все начинают в JS.",
+      "creation_date": "2025-07-01T10:50:00.000Z",
+      "author": 3,
+      "snippet": 16
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 24,
+    "fields": {
+      "text": "Map - незаменимый метод для массивов.",
+      "creation_date": "2025-07-01T10:55:00.000Z",
+      "author": 2,
+      "snippet": 17
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 25,
+    "fields": {
+      "text": "Современный JavaScript без map уже не представить.",
+      "creation_date": "2025-07-01T11:00:00.000Z",
+      "author": 4,
+      "snippet": 17
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 26,
+    "fields": {
+      "text": "Fetch API упрощает работу с запросами.",
+      "creation_date": "2025-07-01T11:05:00.000Z",
+      "author": 2,
+      "snippet": 18
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 27,
+    "fields": {
+      "text": "Хороший пример для работы с REST API.",
+      "creation_date": "2025-07-01T11:10:00.000Z",
+      "author": 5,
+      "snippet": 18
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 28,
+    "fields": {
+      "text": "Основа интерактивного веба.",
+      "creation_date": "2025-07-01T11:15:00.000Z",
+      "author": 2,
+      "snippet": 19
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 29,
+    "fields": {
+      "text": "Без этого никуда во фронтенде.",
+      "creation_date": "2025-07-01T11:20:00.000Z",
+      "author": 6,
+      "snippet": 19
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 30,
+    "fields": {
+      "text": "Обработчики событий - ключ к динамичности.",
+      "creation_date": "2025-07-01T11:25:00.000Z",
+      "author": 2,
+      "snippet": 20
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 31,
+    "fields": {
+      "text": "Async/await делает асинхронный код намного чище.",
+      "creation_date": "2025-07-01T11:30:00.000Z",
+      "author": 2,
+      "snippet": 21
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 32,
+    "fields": {
+      "text": "Важно для сохранения данных на клиенте.",
+      "creation_date": "2025-07-01T11:35:00.000Z",
+      "author": 2,
+      "snippet": 22
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 33,
+    "fields": {
+      "text": "Отложенные действия - очень полезно.",
+      "creation_date": "2025-07-01T11:40:00.000Z",
+      "author": 2,
+      "snippet": 23
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 34,
+    "fields": {
+      "text": "Деструктуризация упрощает код.",
+      "creation_date": "2025-07-01T11:45:00.000Z",
+      "author": 2,
+      "snippet": 24
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 35,
+    "fields": {
+      "text": "Spread оператор - супер удобно!",
+      "creation_date": "2025-07-01T11:50:00.000Z",
+      "author": 2,
+      "snippet": 25
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 36,
+    "fields": {
+      "text": "С этого начинается любой код на C++.",
+      "creation_date": "2025-07-01T11:55:00.000Z",
+      "author": 3,
+      "snippet": 26
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 37,
+    "fields": {
+      "text": "Базовый цикл, хороший старт.",
+      "creation_date": "2025-07-01T12:00:00.000Z",
+      "author": 3,
+      "snippet": 27
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 38,
+    "fields": {
+      "text": "Пример функции для новичков.",
+      "creation_date": "2025-07-01T12:05:00.000Z",
+      "author": 3,
+      "snippet": 28
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 39,
+    "fields": {
+      "text": "Использование векторов - это очень по-современному для C++.",
+      "creation_date": "2025-07-01T12:10:00.000Z",
+      "author": 3,
+      "snippet": 29
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 41,
+    "fields": {
+      "text": "Базовый класс Java, классика.",
+      "creation_date": "2025-07-01T12:20:00.000Z",
+      "author": 3,
+      "snippet": 31
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 42,
+    "fields": {
+      "text": "Условные операторы - основа логики в Java.",
+      "creation_date": "2025-07-01T12:25:00.000Z",
+      "author": 3,
+      "snippet": 32
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 44,
+    "fields": {
+      "text": "Фильтрация данных - полезно для безопасности.",
+      "creation_date": "2025-07-01T12:35:00.000Z",
+      "author": 3,
+      "snippet": 34
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 45,
+    "fields": {
+      "text": "Очень важный сниппет для внутренней конфигурации.",
+      "creation_date": "2025-07-01T12:40:00.000Z",
+      "author": 4,
+      "snippet": 35
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 46,
+    "fields": {
+      "text": "Еще один хороший пример для начинающих на Java.",
+      "creation_date": "2025-07-01T12:45:00.000Z",
+      "author": 4,
+      "snippet": 36
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 47,
+    "fields": {
+      "text": "Циклы - это хлеб и масло программирования на Java.",
+      "creation_date": "2025-07-01T12:50:00.000Z",
+      "author": 5,
+      "snippet": 37
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 48,
+    "fields": {
+      "text": "Простой вывод в C++, то что нужно.",
+      "creation_date": "2025-07-01T12:55:00.000Z",
+      "author": 6,
+      "snippet": 38
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 49,
+    "fields": {
+      "text": "Условные операторы - основа логики в C++.",
+      "creation_date": "2025-07-01T13:00:00.000Z",
+      "author": 7,
+      "snippet": 39
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 50,
+    "fields": {
+      "text": "Отличный простой пример функции на Java.",
+      "creation_date": "2025-07-01T13:05:00.000Z",
+      "author": 8,
+      "snippet": 45
+    }
+  }
+]
