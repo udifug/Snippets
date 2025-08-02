@@ -1,7 +1,8 @@
 {% load my_tags %}
 <div class="container my-4">
     <div class="position-relative mb-4">
-        <a href="{% url 'snippets-list' %}" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y">
+        <a href="{% url 'snippets-list' %}"
+           class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y">
             <i class="bi bi-arrow-left"></i> Назад</a>
 
         <div class="col text-center h4">Информация о сниппете</div>
@@ -33,6 +34,11 @@
                     <div class="info-row">
                         <span>Название:</span>
                         <span>{{ snippet.name }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Просмотры:</span>
+                        <span>{{ snippet.views_count }}</span>
                     </div>
 
                     <div class="info-row">
@@ -86,8 +92,21 @@
                 </div>
             </div>
         </div>
+        {# Отображения тегов #}
+        <div class="col-md-3">
+            <h5>Теги:</h5>
+            {% if snippet.tags.all %}
+                {% for tag in snippet.tags.all %}
+                    <span class="badge bg-success me-2 mb-1">{{ tag.name }}</span>
 
-        <div class="d-flex justify-content-end">
-            <i class="text-muted">Просмотрено: {{ snippet.views_count }}</i></div>
+                {% endfor %}
+            {% else %}
+                Отсутствуют
+            {% endif %}
+        </div>
+    
     </div>
+
+
 </div>
+

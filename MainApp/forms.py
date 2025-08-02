@@ -7,13 +7,14 @@ from django.contrib.auth.models import User
 class SnippetForm(forms.ModelForm):
     class Meta:
         model = Snippet
-        fields = ['name', 'lang', 'code', 'description', 'access']
+        fields = ['name', 'lang', 'code', 'description', 'access', 'tags']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название сниппета'}),
             'lang': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Выберите язык'}),
             'code': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Код сниппета'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание'}),
             'access': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Приватность'}),
+            'tags': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Выберите теги'}),
         }
 
     def clean_name(self):

@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from MainApp import views
@@ -16,6 +17,5 @@ urlpatterns = [
     path('logout', views.user_logout, name="logout"),
     path('registration', views.user_registration, name="registration"),
     path('comment/add', views.comment_add, name="comment-add"),
-
-
+    path('admin/', admin.site.urls)
 ]
