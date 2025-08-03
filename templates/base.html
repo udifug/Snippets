@@ -1,5 +1,6 @@
 <!doctype html>
 {% load static %}
+{% load my_tags %}
 <html lang="ru" class="h-100" data-bs-theme="dark">
 
 <head>
@@ -15,9 +16,9 @@
         <!-- Fontawessome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+              integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
         <!-- Custom styles for this template -->
         <style>
             main > .container {
@@ -32,6 +33,23 @@
                 padding-right: 15px;
                 padding-left: 15px;
             }
+
+            .alerts-fixed-container {
+                position: fixed; /* Фиксирует контейнер относительно окна просмотра */
+                top: 20px; /* Отступ сверху */
+                right: -100px;
+                transform: translateX(-50%); /* Точное центрирование */
+                z-index: 1080;
+                width: 100%;
+                max-width: 500px; /* Ограничим ширину сообщений для лучшего внешнего вида */
+                padding: 0 15px; /* Небольшие отступы по бокам */
+                pointer-events: none; /* Позволяет кликать сквозь контейнер, если нет сообщений */
+            }
+
+            .alerts-fixed-container .alert {
+                pointer-events: auto; /* Возвращает кликабельность для самих алертов */
+                margin-bottom: 15px; /* Отступ между сообщениями */
+            }
         </style>
     {% endblock %}
 </head>
@@ -41,10 +59,18 @@
 {% include 'inc/inc-header.html' %}
 
 <main role="main" class="mt-3 flex-shrink-0">
-    <div class="container">
-            <div class="col text-center">
-                <h3>{{ pagename }}</h3>
+    <div class="alerts-fixed-container" id="alertsFixedContainer">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags | messages_type_mapping }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
             </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <div class="col text-center">
+            <h3>{{ pagename }}</h3>
+        </div>
         {% block content %}
 
         {% endblock %}
