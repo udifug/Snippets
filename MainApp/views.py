@@ -9,6 +9,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from MainApp.signals import snippet_view
 
 
 def index_page(request):
@@ -127,9 +128,7 @@ def snippets_stats(request):
 
 def snippet_detail(request, id):
     snippet = Snippet.objects.prefetch_related('comments').get(id=id)
-    snippet.views_count = F("views_count") + 1
-    snippet.save(update_fields=['views_count'])
-    snippet.refresh_from_db()
+    snippet_view.send(sender=None, snippet=snippet)
     comments_form = CommentForm()
     comments = snippet.comments.all()
 
