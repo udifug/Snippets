@@ -34,6 +34,7 @@ def snippet_create(request):
             snippet = form.save(commit=False)
             snippet.user = request.user
             snippet.save()
+            messages.info(request, f"Сниппет был создан")
             return redirect("snippets-list")
 
         else:
@@ -152,6 +153,7 @@ def comment_add(request):
             comment.author = request.user
             comment.snippet = snippet
             comment.save()
+        messages.info(request, f'Комментарий оставлен')
         return redirect("snippet-page", id=snippet_id)
 
     return Http404
@@ -168,6 +170,7 @@ def snippet_delete(request, id):
         return render(request, 'pages/snippet_detail.html', context)
 
     snippet.delete()
+    messages.info(request, 'Сниппет удален')
     return redirect("snippets-mylist")
 
 
@@ -195,6 +198,7 @@ def snippet_edit(request, id):
         form = SnippetForm(request.POST, instance=snippet)
         if form.is_valid():
             form.save()
+            messages.info(request, 'Сниппет изменен')
             return redirect("snippets-mylist")
         else:
             context = {
