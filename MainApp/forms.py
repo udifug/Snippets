@@ -17,11 +17,20 @@ class SnippetForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Выберите теги'}),
         }
 
+    def validate_length(self, field_name, min_len, max_len):
+        value = self.cleaned_data.get(field_name, '')
+        if len(value) < min_len:
+            raise forms.ValidationError(f"минимальная длина {min_len} символа")
+        elif len(value) > max_len:
+            raise forms.ValidationError(f"максимальная длина {max_len} символов")
+        return value
+
     def clean_name(self):
-        name = self.cleaned_data['name']
-        if len(name) < 3:
-            raise forms.ValidationError("Название должно содержать не менее 3 символов.")
-        return name
+        return self.validate_length('name',3,20)
+
+    def clean_code(self):
+        return self.validate_length('code',3,1000)
+
 
 
 class UserRegistrationForm(forms.ModelForm):

@@ -84,11 +84,9 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title mb-0">Код сниппета <i class="{{ snippet.lang | get_lang_icon }}"></i></h5>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" title="Скопировать код">
-                            <i class="bi bi-clipboard"></i> Скопировать
-                        </button>
+                        
                     </div>
-                    {{ snippet.code }}
+                      <pre><code class="language-{{ snippet.lang|default:'python' }}">{% autoescape on %}{{ snippet.code }}{% endautoescape %}</code></pre>
                 </div>
             </div>
         </div>
