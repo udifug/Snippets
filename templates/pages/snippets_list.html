@@ -2,7 +2,9 @@
 
 {% block content %}
     {# Поле с фильтрами #}
-    {% include "pages/components/snippets_list_filter.html" %}
+    {% if not request.GET.tag %}
+        {% include "pages/components/snippets_list_filter.html" %}
+    {% endif %}
 
     {# Список сниппетов #}
     {% include 'pages/components/snippets_list_table.html' %}

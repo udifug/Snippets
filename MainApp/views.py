@@ -77,6 +77,11 @@ def snippets_list(request, snippet_my):
     if sort:
         snippets = snippets.order_by(sort)
 
+    # tags
+    tag = request.GET.get('tag')
+    if tag:
+        snippets = snippets.filter(tags__name=tag)
+        pagename = 'Сниппеты по выбранным тегам'
 
     # paginator
     paginator = Paginator(snippets, 5)
@@ -97,6 +102,7 @@ def snippets_list(request, snippet_my):
         'snippets': snippets,
         "sort": sort,
         "lang": lang,
+        "tag" : tag,
         "user_id": user_id,
         "LANG_CHOICES": LANG_CHOICES,
         "users": users,

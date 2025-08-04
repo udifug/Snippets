@@ -95,8 +95,7 @@
             <h5>Теги:</h5>
             {% if snippet.tags.all %}
                 {% for tag in snippet.tags.all %}
-                    <span class="badge bg-success me-2 mb-1">{{ tag.name }}</span>
-
+                    <a href="{% url 'snippets-list' %}{% querystring tag=tag.name %}" class="badge bg-success me-2 mb-1">{{ tag.name }}</a>
                 {% endfor %}
             {% else %}
                 Отсутствуют
