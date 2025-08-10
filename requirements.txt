@@ -10,6 +10,8 @@ decorator==5.2.1
 Django==5.2.3
 django-extensions==4.1
 executing==2.2.0
+factory_boy==3.3.3
+Faker==37.5.3
 h11==0.16.0
 idna==3.10
 iniconfig==2.1.0
