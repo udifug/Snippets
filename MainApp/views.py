@@ -1,6 +1,6 @@
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.db.models import F, Q, Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
@@ -134,11 +134,14 @@ def snippets_stats(request):
 
 def snippet_detail(request, id):
     snippet = Snippet.objects.prefetch_related('comments').get(id=id)
+    if snippet.user != request.user and snippet.access == 'private':
+        return HttpResponseForbidden('You are not authorized to access this page')
     snippet_view.send(sender=None, snippet=snippet)
     comments_form = CommentForm()
     comments = snippet.comments.all()
 
     context = {
+        'pagename': f'Сниппет: {snippet.name}',
         'snippet': snippet,
         'comments': comments,
         'comments_form': comments_form
