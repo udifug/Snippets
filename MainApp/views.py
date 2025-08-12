@@ -161,10 +161,11 @@ def comment_add(request):
             comment.author = request.user
             comment.snippet = snippet
             comment.save()
+
         messages.info(request, f'Комментарий оставлен')
         return redirect("snippet-page", id=snippet_id)
 
-    return Http404
+    raise Http404
 
 
 @login_required

@@ -1,5 +1,3 @@
-from os import access
-
 import pytest
 from MainApp.factories import UserFactory, SnippetFactory, TagFactory, CommentFactory
 from django.test import Client, RequestFactory
@@ -292,17 +290,17 @@ class TestSnippetPage:
         snippets_list = list(response.context['page_obj'])
 
         # Проверяем, что видны публичные сниппеты всех пользователей
-        public_snippets = [s for s in self.snippets if s.public]
+        public_snippets = [s for s in self.snippets if s.access == 'public']
         for snippet in public_snippets:
             assert snippet in snippets_list
 
         # Проверяем, что видны приватные сниппеты текущего пользователя
-        private_own_snippets = [s for s in self.snippets if not s.public and s.user == self.user]
+        private_own_snippets = [s for s in self.snippets if s.access != 'public' and s.user == self.user]
         for snippet in private_own_snippets:
             assert snippet in snippets_list
 
         # Проверяем, что НЕ видны приватные сниппеты других пользователей
-        private_others_snippets = [s for s in self.snippets if not s.public and s.user != self.user]
+        private_others_snippets = [s for s in self.snippets if s.access != 'public' and s.user != self.user]
         for snippet in private_others_snippets:
             assert snippet not in snippets_list
 
@@ -314,12 +312,12 @@ class TestSnippetPage:
         snippets_list = list(response.context['page_obj'])
 
         # Проверяем, что видны только публичные сниппеты
-        public_snippets = [s for s in self.snippets if s.public]
+        public_snippets = [s for s in self.snippets if s.access != 'public' ]
         for snippet in public_snippets:
             assert snippet in snippets_list
 
         # Проверяем, что НЕ видны приватные сниппеты
-        private_snippets = [s for s in self.snippets if not s.public]
+        private_snippets = [s for s in self.snippets if s.access != 'public']
         for snippet in private_snippets:
             assert snippet not in snippets_list
 
@@ -596,7 +594,7 @@ class TestSnippetDetail:
     def test_snippet_detail_with_tags(self):
         """Тест просмотра сниппета с тегами"""
         # Создаем теги через фабрику
-        from .factories import TagFactory
+        from MainApp.factories import TagFactory
         python_tag = TagFactory(name='python')
         django_tag = TagFactory(name='django')
         web_tag = TagFactory(name='web')
