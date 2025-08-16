@@ -4,6 +4,7 @@ from MainApp.factories import UserFactory, SnippetFactory
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
 
 @pytest.mark.django_db
@@ -236,3 +237,63 @@ def test_snippets_my_page_access_and_content(browser, live_server):
     page_content = browser.find_element(By.TAG_NAME, "body").text
     assert "Мои сниппеты" in page_content, \
         "На странице должна быть информация о том, что это страница 'Мои сниппеты'"
+
+
+@pytest.mark.django_db
+def test_snippet_create(browser,live_server):
+    user = UserFactory()
+
+    browser.get(f"{live_server.url}{reverse('home')}")
+
+    auth_dropdown = browser.find_element(By.ID, "navbarDropdown")
+    auth_dropdown.click()
+
+    # Ждем появления формы авторизации
+    WebDriverWait(browser, 10).until(
+        EC.visibility_of_element_located((By.ID, "usernameInput"))
+    )
+
+    # Заполняем форму авторизации для user1
+    username_input = browser.find_element(By.ID, "usernameInput")
+    password_input = browser.find_element(By.ID, "passwordInput")
+
+    username_input.send_keys(user.username)
+    password_input.send_keys("defaultpassword")
+
+    # Отправляем форму
+    login_form = browser.find_element(By.CSS_SELECTOR, "form[action*='login']")
+    login_form.submit()
+
+    # Ждем перенаправления на главную страницу
+    WebDriverWait(browser, 10).until(
+        EC.url_to_be(f"{live_server.url}{reverse('home')}")
+    )
+
+    browser.get(f"{live_server.url}{reverse('snippets-add')}")
+    WebDriverWait(browser, 10).until(
+        EC.visibility_of_element_located((By.TAG_NAME, 'form'))
+    )
+
+    current_url = browser.current_url
+    assert current_url == f"{live_server.url}{reverse('snippets-add')}", \
+        f"Авторизованный пользователь должен иметь доступ к странице 'Создание сниппета'. Текущий URL: {current_url}"
+
+    name_input = browser.find_element(By.CSS_SELECTOR, 'input[name="name"]')
+    lang_select = browser.find_element(By.CSS_SELECTOR, 'select[name="lang"]')
+    code_input = browser.find_element(By.CSS_SELECTOR, 'textarea[name="code"]')
+    form = browser.find_element(By.TAG_NAME, 'form')
+
+    name_input.send_keys("Test snippet")
+    select = Select(lang_select)
+    select.select_by_value("python")
+    code_input.send_keys("Snippet code")
+    form.submit()
+
+    from MainApp.models import Snippet  # Укажите правильный путь к вашей модели
+    assert Snippet.objects.count() == 1, "Сниппет не был создан в базе данных!"
+
+    browser.get(f"{live_server.url}{reverse('snippets-mylist')}")
+    snippet_name = WebDriverWait(browser, 10).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "td.snippet"))
+    )
+    assert snippet_name is not None

@@ -18,7 +18,7 @@
                     </td>
 
                     {# Название и значки языков #}
-                    <td>
+                    <td class="snippet">
                         <i class="{{ snippet.lang | get_lang_icon }}"></i>
                         <a class="text-light text-decoration-none fw-bold"
                            href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>

@@ -17,6 +17,10 @@ class SnippetForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Выберите теги'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tags'].required = False
+
     def validate_length(self, field_name, min_len, max_len):
         value = self.cleaned_data.get(field_name, '')
         if len(value) < min_len:
