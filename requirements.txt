@@ -31,6 +31,7 @@ PySocks==1.7.1
 pytest==8.4.1
 pytest-cov==6.2.1
 pytest-django==4.11.1
+python-dotenv==1.1.1
 requests==2.32.4
 selenium==4.34.2
 setuptools==80.9.0
@@ -47,6 +48,7 @@ tzdata==2025.2
 undetected-chromedriver==3.5.5
 urllib3==2.5.0
 wcwidth==0.2.13
+webdriver-manager==4.0.2
 websocket-client==1.8.0
 websockets==15.0.1
 wsproto==1.2.0
