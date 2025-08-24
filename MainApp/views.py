@@ -1,3 +1,5 @@
+import logging
+
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment
 from django.http import Http404, HttpResponse, HttpResponseForbidden
@@ -9,9 +11,9 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
-from MainApp.signals import snippet_view
+from MainApp.signals import snippet_view, snippet_deleted
 
-
+logger = logging.getLogger(__name__)
 def index_page(request):
     context = {
         'pagename': 'Главное меню'
@@ -190,7 +192,11 @@ def snippet_delete(request, id):
         }
         return render(request, 'pages/snippet_detail.html', context)
 
+    snippet_id = snippet.id
     snippet.delete()
+
+    snippet_deleted.send(sender=None, snippet_id = snippet_id)
+
     messages.info(request, 'Сниппет удален')
     return redirect("snippets-mylist")
 
