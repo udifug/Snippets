@@ -30,7 +30,7 @@ def test_factory_tags(tag_factory):
 
     assert tags[0].name == "js"
     assert tags[1].name == "basic"
-    assert tags[3].name == "oop"
+    assert tags[2].name == "oop"
 
 
 @pytest.mark.django_db
