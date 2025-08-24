@@ -2,10 +2,22 @@
     <div class="col-8">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">Всего комментариев: <span class="badge bg-secondary">{{ comments.count }}</span></h5>
-            <a href="?sort=-creation_date" class="btn btn-outline-secondary btn-sm">
-                <i class="fa-solid fa-arrow-up-short-wide"></i>
-                Сортировка
-            </a>
+            {% if sort == 'creation_date' %}
+                <a href="{% querystring sort='-creation_date' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fa-solid fa-arrow-up-short-wide"></i>
+                    Сортировка
+                </a>
+            {% elif sort == '-creation_date' %}
+                <a href="{% querystring sort='creation_date' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                    Сортировка
+                </a>
+            {% else %}
+                <a href="{% querystring sort='-creation_date' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fa-solid fa-arrow-up-short-wide"></i>
+                    Сортировка
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -14,7 +26,7 @@
 <div class="row mt-4">
     <div class="col-8">
         <ul class="list-group mb-3">
-            {% for comment in comments %}
+            {% for comment in page_comment %}
                 <li class="list-group-item d-flex align-items-start">
                     <div class="w-100">
 
@@ -42,5 +54,40 @@
                 </li>
             {% endfor %}
         </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        {% if page_comment.has_other_pages %}
+            <nav aria-label="Пагинация статей">
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item {% if not page_comment.has_previous %}disabled{% endif %}">
+                        <a class="page-link"
+                           {% if page_comment.has_previous %}href='{% querystring page=page_comment.previous_page_number %}'
+                           {% endif %} tabindex="-1" aria-disabled="true">Предыдущая</a>
+                    </li>
+
+                    {% for num in page_comment.paginator.page_range %}
+                        {% if page_comment.number == num %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href={% querystring page=num %}>{{ num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href='{% querystring page=num %}'>{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    <li class="page-item {% if not page_comment.has_next %}disabled{% endif %}">
+                        <a class="page-link"
+                           {% if page_comment.has_next %}href='{% querystring page=page_comment.next_page_number %}'{% endif %}>Следующая</a>
+                    </li>
+
+                </ul>
+            </nav>
+        {% endif %}
     </div>
 </div>

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}">
     <div class="row">
         <div class="col">
             {% if edit %}
@@ -55,6 +56,7 @@
 
             <div class="mb-3">
                 {{ form.code }}
+
                 {% if form.code.errors %}
                     <div class="alert alert-danger" role="alert">
                         {% for error in form.code.errors %}
@@ -62,6 +64,10 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+                <p>
+                    Количество символов:
+                    <span id="charCount">0/5000</span>
+                </p>
             </div>
 
             <div class="mb-3">
@@ -84,4 +90,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block script %}
+	{{ block.super }}
+    <script src="{% static 'js/forms.js' %}"></script>
 {% endblock %}

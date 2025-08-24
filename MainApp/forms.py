@@ -33,7 +33,7 @@ class SnippetForm(forms.ModelForm):
         return self.validate_length('name',3,20)
 
     def clean_code(self):
-        return self.validate_length('code',3,1000)
+        return self.validate_length('code',3,5000)
 
 
 

@@ -1,0 +1,11 @@
+.low-limit {
+    color: green;
+}
+
+.medium-limit {
+    color: orange;
+}
+
+.high-limit {
+    color: red;
+}

@@ -16,8 +16,6 @@ def index_page(request):
     context = {
         'pagename': 'Главное меню'
     }
-    messages.info(request, 'Успех')
-    messages.info(request, 'спех')
     return render(request, 'pages/index.html', context)
 
 
@@ -142,10 +140,22 @@ def snippet_detail(request, id):
     comments_form = CommentForm()
     comments = snippet.comments.all()
 
+    sort = request.GET.get("sort")
+    if sort:
+        comments = comments.order_by(sort)
+
+    paginator = Paginator(comments,3)
+    page_number = request.GET.get("page")
+    page_comment = paginator.get_page(page_number)
+
+
+
     context = {
         'pagename': f'Сниппет: {snippet.name}',
         'snippet': snippet,
         'comments': comments,
+        'sort' : sort,
+        'page_comment' : page_comment,
         'comments_form': comments_form
     }
     return render(request, 'pages/snippet_detail.html', context)

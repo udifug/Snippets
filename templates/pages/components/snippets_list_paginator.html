@@ -6,7 +6,7 @@
 
                     <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
                         <a class="page-link"
-                           {% if page_obj.has_previous %}href='{% querystring page=page_obj.previous_page_number tabindex="-1"  %}'
+                           {% if page_obj.has_previous %}href='{% querystring page=page_obj.previous_page_number %}'
                            {% endif %} tabindex="-1" aria-disabled="true">Предыдущая</a>
                     </li>
 
