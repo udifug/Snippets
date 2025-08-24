@@ -16,6 +16,8 @@ def index_page(request):
     context = {
         'pagename': 'Главное меню'
     }
+    messages.info(request, 'Успех')
+    messages.info(request, 'спех')
     return render(request, 'pages/index.html', context)
 
 

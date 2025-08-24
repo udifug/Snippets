@@ -84,25 +84,16 @@
 
 {% include 'inc/inc-footer.html' %}
 
-<!-- Optional JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+{% block script %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 <script src="{% static 'js/prism.js' %}"></script>
-<script>
-    // Копирование кода в буфер обмена
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const codeBlock = btn.closest('.card-body').querySelector('code');
-            const text = codeBlock.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                btn.innerHTML = '<i class="bi bi-clipboard-check"></i> Скопировано!';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="bi bi-clipboard"></i> Скопировать';
-                }, 2000);
-            });
-        });
-    });
-</script>
+
+    <script src="{% static 'js/messages.js' %}"></script>
+{% endblock %}
+
+
 </body>
 </html>
