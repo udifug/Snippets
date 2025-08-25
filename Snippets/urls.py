@@ -17,5 +17,6 @@ urlpatterns = [
     path('logout', views.user_logout, name="logout"),
     path('registration', views.user_registration, name="registration"),
     path('comment/add', views.comment_add, name="comment-add"),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('notifications/', views.user_notifications, name="notifications")
 ]

@@ -1,6 +1,13 @@
 from django.contrib import admin
-from .models import Snippet, Comment, Tag
+from .models import Snippet, Comment, Tag, Notification
 from django.db.models import Count
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['recipient', 'notification_type', 'title', 'is_read', 'created_at']
+    list_filter = ['notification_type', 'is_read', 'created_at']
+    search_fields = ['recipient__username', 'title', 'message']
+    readonly_fields = ['created_at']
 
 class SnippetAdmin(admin.ModelAdmin):
     list_display = ('name', 'lang', 'access', 'user', 'num_comments')

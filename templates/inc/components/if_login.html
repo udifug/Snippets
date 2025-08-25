@@ -1,6 +1,6 @@
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
-    <li class="nav-item">
+{#    <li class="nav-item">#}
 
         <a class="btn btn-outline-secondary" href="{% url 'snippets-add' %}">Добавить сниппет</a>
 
@@ -10,10 +10,12 @@
 
         <a class="btn btn-outline-warning" href="{% url 'snippets-mylist' %}">Мои сниппеты</a>
 
+        <a class="btn btn-outline-warning" href="/notifications/"><i class="fas fa-bell"></i> Уведомления</a>
+
         <button type="button" class="btn btn-success position-relative">
             Логин: {{ request.user.username }}
         </button>
 
         <button type="submit" class="btn btn-outline-danger">Выйти</button>
-    </li>
+{#    </li>#}
 </form>

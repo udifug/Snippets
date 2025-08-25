@@ -1,7 +1,7 @@
 import logging
 
 from idlelib.iomenu import errors
-from MainApp.models import Snippet, Comment
+from MainApp.models import Snippet, Comment, Notification
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.db.models import F, Q, Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
@@ -278,3 +278,20 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect('home')
+
+
+@login_required
+def user_notifications(request):
+    """Страница с уведомлениями пользователя"""
+    # Отмечаем все уведомления как прочитанные при переходе на страницу
+
+    # Получаем все уведомления для авторизованного пользователя, сортируем по дате создания
+    notifications = Notification.objects.filter(recipient=request.user)
+
+    notifications.update(is_read=True)
+
+    context = {
+        'pagename': 'Мои уведомления',
+        'notifications': notifications
+    }
+    return render(request, 'pages/notifications.html', context)
