@@ -9,7 +9,7 @@ urlpatterns = [
     path('snippets/add', views.snippet_create, name='snippets-add'),
     path('snippets/list', views.snippets_list, {"snippet_my": False}, name='snippets-list'),
     path('snippets/mylist', views.snippets_list, {"snippet_my": True}, name='snippets-mylist'),
-    path ('snippets/stats', views.snippets_stats, name='snippets-stats'),
+    path('snippets/stats', views.snippets_stats, name='snippets-stats'),
     path('snippet/<int:id>', views.snippet_detail, name="snippet-page"),
     path('snippet/<int:id>/delete', views.snippet_delete, name="snippet-delete"),
     path('snippet/<int:id>/edit', views.snippet_edit, name="snippet-edit"),
@@ -18,5 +18,6 @@ urlpatterns = [
     path('registration', views.user_registration, name="registration"),
     path('comment/add', views.comment_add, name="comment-add"),
     path('admin/', admin.site.urls),
-    path('notifications/', views.user_notifications, name="notifications")
+    path('notifications/', views.user_notifications, name="notifications"),
+    path('api/notifications/unread-count/', views.unread_notifications_count, name='unread-notifications-count'),
 ]
