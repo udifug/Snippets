@@ -1,7 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        .badge.bg-danger {
+            animation: pulse 2s infinite;
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
 
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
     <!-- Begin page content -->
     <main role="main" class="mt-3 flex-shrink-0">
 
@@ -19,8 +37,12 @@
                                             <i class="fas fa-bell text-info"></i>
                                         {% endif %}
                                         {{ notification.title }}
+                                        {% if  notification.is_read == 0 %}
+                                            <span class="badge bg-danger"><i class="fas fa-star me-1"></i>new</span>
+                                        {% endif %}
                                     </h6>
                                 </div>
+
                                 <div>
                                     <small class="text-muted">{{ notification.created_at|date:"j E Y г. в H:i" }}</small>
 
@@ -40,8 +62,8 @@
                     </div>
                 {% endfor %}
             </div>
-            {% else %}
-             <div class="alert alert-info"><i class="fas fa-info-circle"></i>У вас пока нет уведомлений.</div>
+        {% else %}
+            <div class="alert alert-info"><i class="fas fa-info-circle"></i>У вас пока нет уведомлений.</div>
         {% endif %}
 
 

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 
 LANG_CHOICES = [
     ("python", "Python"),
@@ -42,6 +44,25 @@ class Notification(models.Model):
         return f"Уведомление для {self.recipient.username}: {self.title}"
 
 
+class LikeDislike(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+    VOTES = (
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike'),
+    )
+
+    vote = models.SmallIntegerField(choices=VOTES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        unique_together = ['user', 'content_type', 'object_id']
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=20, unique=True)
 
@@ -68,6 +89,14 @@ class Comment(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
     snippet = models.ForeignKey(to=Snippet, on_delete=models.CASCADE, related_name="comments")
+    likes = GenericRelation(LikeDislike)
 
     def __repr__(self):
         return f"C: {self.text[:10]} author:{self.author} sn: {self.snippet.name}"
+
+    def likes_count(self):
+        return self.likes.filter(vote=LikeDislike.LIKE).count()
+
+
+    def dislikes_count(self):
+        return self.likes.filter(vote=LikeDislike.DISLIKE).count()

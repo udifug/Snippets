@@ -1,7 +1,7 @@
 import logging
 
 from idlelib.iomenu import errors
-from MainApp.models import Snippet, Comment, Notification
+from MainApp.models import Snippet, Comment, Notification, LikeDislike
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import F, Q, Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
@@ -144,14 +144,14 @@ def snippet_detail(request, id):
     comments_form = CommentForm()
     comments = snippet.comments.all()
 
+
     sort = request.GET.get("sort")
     if sort:
         comments = comments.order_by(sort)
 
-    paginator = Paginator(comments,3)
+    paginator = Paginator(comments,5)
     page_number = request.GET.get("page")
     page_comment = paginator.get_page(page_number)
-
 
 
     context = {
@@ -338,3 +338,7 @@ def unread_notifications_count(request):
         'unread_count': 0,
         'timestamp': str(datetime.now())
     })
+
+
+def notifications_delete(request):
+    ...

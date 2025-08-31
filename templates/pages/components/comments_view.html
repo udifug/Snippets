@@ -42,14 +42,23 @@
                         </p>
 
                         <small>
-                            <a href="#" class="text-decoration-none me-2">Ответить</a>
-                            <a href="#" class="text-decoration-none me-2">
-                                <i class="fa-regular fa-thumbs-up"></i>
-                            </a>
-                            <a href="#" class="text-decoration-none">
-                                <i class="fa-solid fa-thumbs-down"></i>
-                            </a>
-                        </small>
+                                <a href="#" class="text-decoration-none me-2">Ответить</a>
+                                <div class="d-inline-flex align-items-center me-3">
+                                    <button class="btn btn-sm btn-outline-success me-1"
+                                            onclick="voteComment(37, 1)"
+                                            title="Лайк">
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    </button>
+                                    <span class="badge bg-success me-2">{{ comment.likes_count }}</span>
+
+                                    <button class="btn btn-sm btn-outline-danger me-1"
+                                            onclick="voteComment(37, -1)"
+                                            title="Дизлайк">
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                    </button>
+                                    <span class="badge bg-danger">{{ comment.dislikes_count }}</span>
+                                </div>
+                            </small>
                     </div>
                 </li>
             {% endfor %}
