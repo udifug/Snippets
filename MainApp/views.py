@@ -1,5 +1,5 @@
 import logging
-
+import json
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment, Notification, LikeDislike
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
@@ -11,7 +11,9 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from MainApp.signals import snippet_view, snippet_deleted
+
 
 
 
@@ -182,6 +184,42 @@ def comment_add(request):
         return redirect("snippet-page", id=snippet_id)
 
     raise Http404
+
+def comment_like(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        comment_id = data.get('comment_id')
+        vote = data.get('vote')
+        user = request.user
+
+        comment = Comment.objects.get(id=comment_id)
+
+        existing_vote = LikeDislike.objects.filter(
+            user=user,
+            content_type=ContentType.objects.get_for_model(Comment),
+            object_id=comment_id,
+        ).first()
+
+        if existing_vote:
+            if existing_vote.vote == vote:
+                existing_vote.delete()
+            else:
+                existing_vote.vote = vote
+                existing_vote.save()
+        else:
+            LikeDislike.objects.create(
+                user=user,
+                vote=vote,
+                content_object=comment
+            )
+
+
+
+        return JsonResponse({
+            'status':'ok',
+            'like': comment.likes_count(),
+            'dislike' : comment.dislikes_count()
+        })
 
 
 @login_required

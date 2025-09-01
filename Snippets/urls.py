@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('notifications/', views.user_notifications, name="notifications"),
     path('api/notifications/unread-count/', views.unread_notifications_count, name='unread-notifications-count'),
+    path('api/comment/like/', views.comment_like, name='comment-like')
 ]
