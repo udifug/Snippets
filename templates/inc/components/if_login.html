@@ -1,6 +1,5 @@
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
-    {#    <li class="nav-item">#}
 
     <a class="btn btn-outline-secondary" href="{% url 'snippets-add' %}">Добавить сниппет</a>
 
@@ -15,10 +14,22 @@
         <span id="notification-count" class="badge bg-danger ms-1">0</span>
     </a>
 
-    <button type="button" class="btn btn-success position-relative">
-        Логин: {{ request.user.username }}
-    </button>
 
-    <button type="submit" class="btn btn-outline-danger">Выйти</button>
-    {#    </li>#}
+    <a class="btn btn-outline-light dropdown-toggle" href="#" id="userDropdown" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user"></i> {{ request.user.username }}
+    </a>
+    <div class="dropdown-menu dropdown-menu-end" style="min-width: 200px;">
+        <a class="dropdown-item" href="{% url 'user-profile' %}">
+            <i class="fas fa-user-circle"></i> Мой профиль
+        </a>
+        <a class="dropdown-item" href="#">
+            <i class="fas fa-edit"></i> Редактировать профиль
+        </a>
+        <div class="dropdown-divider"></div>
+         <button type="submit" class="dropdown-item" >
+            <i class="fas fa-sign-out-alt"></i> Выйти
+        </button>
+    </div>
+
 </form>

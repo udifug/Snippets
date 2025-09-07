@@ -90,7 +90,7 @@ def snippets_list(request, snippet_my):
         pagename = 'Сниппеты по выбранным тегам'
 
     # paginator
-    paginator = Paginator(snippets, 5)
+    paginator = Paginator(snippets, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -122,7 +122,6 @@ def snippets_stats(request):
         total_snippets = Count('id'),
         public_snippets = Count('id', filter=Q(access='public')),
         average_views = Avg('views_count'),
-
     )
     if general_stats['average_views'] is not None:
         general_stats['average_views'] = int(round(general_stats['average_views']))
@@ -297,6 +296,22 @@ def user_registration(request):
             }
             return render(request, 'pages/user_registration.html', context)
 
+
+def user_profile(request):
+    profile_stat = Snippet.objects.filter(user=request.user).aggregate(
+        total_snippets=Count('id'),
+        avg_views=Avg("views_count")
+    )
+    if profile_stat['avg_views'] is not None:
+        profile_stat['avg_views'] = int(round(profile_stat['avg_views']))
+    context = {
+        "statistic" : profile_stat,
+        'top_five': Snippet.objects.order_by('-views_count')[:5]
+    }
+    return render(request,'pages/user_profile.html',context)
+
+def edit_profile(request):
+    ...
 
 def user_login(request):
     if request.method == 'POST':
