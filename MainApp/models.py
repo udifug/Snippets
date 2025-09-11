@@ -94,12 +94,20 @@ class Comment(models.Model):
     def __repr__(self):
         return f"C: {self.text[:10]} author:{self.author} sn: {self.snippet.name}"
 
-    def likes_count(self):
-        return self.likes.filter(vote=LikeDislike.LIKE).count()
-
-
-    def dislikes_count(self):
-        return self.likes.filter(vote=LikeDislike.DISLIKE).count()
+    @classmethod
+    def with_likes_count(cls):
+        return cls.objects.annotate(
+            likes_count=models.Count('likes',
+                                     filter=models.Q(likes__vote=LikeDislike.LIKE)),
+            dislikes_count=models.Count('likes',
+                                        filter=models.Q(likes__vote=LikeDislike.DISLIKE))
+        )
+    # def likes_count(self):
+    #     return self.likes.filter(vote=LikeDislike.LIKE).count()
+    #
+    #
+    # def dislikes_count(self):
+    #     return self.likes.filter(vote=LikeDislike.DISLIKE).count()
 
 
 class UserProfile(models.Model):

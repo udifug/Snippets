@@ -3,7 +3,7 @@ import json
 from idlelib.iomenu import errors
 from MainApp.models import Snippet, Comment, Notification, LikeDislike
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
-from django.db.models import F, Q, Count, Avg
+from django.db.models import F, Q, Count, Avg, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm, UserProfileForm, UserEditForm
 from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
@@ -14,10 +14,9 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from MainApp.signals import snippet_view, snippet_deleted
 
-
-
-
 logger = logging.getLogger(__name__)
+
+
 def index_page(request):
     context = {
         'pagename': 'Главное меню'
@@ -89,6 +88,7 @@ def snippets_list(request, snippet_my):
         snippets = snippets.filter(tags__name=tag)
         pagename = 'Сниппеты по выбранным тегам'
 
+    snippets = snippets.select_related('user')
     # paginator
     paginator = Paginator(snippets, 10)
     page_number = request.GET.get('page')
@@ -108,7 +108,7 @@ def snippets_list(request, snippet_my):
         'snippets': snippets,
         "sort": sort,
         "lang": lang,
-        "tag" : tag,
+        "tag": tag,
         "user_id": user_id,
         "LANG_CHOICES": LANG_CHOICES,
         "users": users,
@@ -117,51 +117,55 @@ def snippets_list(request, snippet_my):
     }
     return render(request, 'pages/snippets_list.html', context)
 
+
 def snippets_stats(request):
     general_stats = Snippet.objects.aggregate(
-        total_snippets = Count('id'),
-        public_snippets = Count('id', filter=Q(access='public')),
-        average_views = Avg('views_count'),
+        total_snippets=Count('id'),
+        public_snippets=Count('id', filter=Q(access='public')),
+        average_views=Avg('views_count'),
     )
     if general_stats['average_views'] is not None:
         general_stats['average_views'] = int(round(general_stats['average_views']))
 
     top_users = User.objects.annotate(num_snippets=Count('snippet')).order_by('-num_snippets')[:3]
 
-    context ={
+    context = {
         "pagename": 'Статистика по сниппетам',
-        'general_stats' : general_stats,
-        'top_five' : Snippet.objects.order_by('-views_count')[:5],
-        'top_users' : top_users
+        'general_stats': general_stats,
+        'top_five': Snippet.objects.order_by('-views_count')[:5],
+        'top_users': top_users
 
     }
-    return render(request, 'pages/snippets_stats.html',context)
+    return render(request, 'pages/snippets_stats.html', context)
+
 
 def snippet_detail(request, id):
-    snippet = Snippet.objects.prefetch_related('comments').get(id=id)
+    snippet = Snippet.objects.prefetch_related("tags").get(id=id)
+
     if snippet.user != request.user and snippet.access == 'private':
         return HttpResponseForbidden('You are not authorized to access this page')
+
     snippet_view.send(sender=None, snippet=snippet)
     comments_form = CommentForm()
-    comments = snippet.comments.all()
-
 
     sort = request.GET.get("sort")
-    if sort:
-        comments = comments.order_by(sort)
+    allow_sort = ['creation_date','-creation_date']
+    if sort not in allow_sort:
+        sort = '-creation_date'
 
-    paginator = Paginator(comments,5)
+    comments =  Comment.with_likes_count().select_related("author").filter(snippet=snippet).order_by(sort)
+
+    paginator = Paginator(comments, 5)
     page_number = request.GET.get("page")
     page_comment = paginator.get_page(page_number)
-
 
     context = {
         'pagename': f'Сниппет: {snippet.name}',
         'snippet': snippet,
-        'comments': comments,
-        'sort' : sort,
-        'page_comment' : page_comment,
-        'comments_form': comments_form
+        'sort': sort,
+        'page_obj': page_comment,
+        'comments_form': comments_form,
+        'all_comments' : comments.count()
     }
     return render(request, 'pages/snippet_detail.html', context)
 
@@ -183,6 +187,7 @@ def comment_add(request):
         return redirect("snippet-page", id=snippet_id)
 
     raise Http404
+
 
 def comment_like(request):
     if request.method == "POST":
@@ -212,12 +217,12 @@ def comment_like(request):
                 content_object=comment
             )
 
-
+        updated = Comment.with_likes_count().get(id=comment.id)
 
         return JsonResponse({
-            'status':'ok',
-            'like': comment.likes_count(),
-            'dislike' : comment.dislikes_count()
+            'status': 'ok',
+            'like': updated.likes_count,
+            'dislike': updated.dislikes_count
         })
 
 
@@ -234,7 +239,7 @@ def snippet_delete(request, id):
     snippet_id = snippet.id
     snippet.delete()
 
-    snippet_deleted.send(sender=None, snippet_id = snippet_id)
+    snippet_deleted.send(sender=None, snippet_id=snippet_id)
 
     messages.info(request, 'Сниппет удален')
     return redirect("snippets-mylist")
@@ -305,10 +310,11 @@ def user_profile(request):
     if profile_stat['avg_views'] is not None:
         profile_stat['avg_views'] = int(round(profile_stat['avg_views']))
     context = {
-        "statistic" : profile_stat,
+        "statistic": profile_stat,
         'top_five': Snippet.objects.order_by('-views_count')[:5]
     }
-    return render(request,'pages/user_profile.html',context)
+    return render(request, 'pages/user_profile.html', context)
+
 
 @login_required
 def edit_profile(request):
@@ -332,6 +338,7 @@ def edit_profile(request):
     }
 
     return render(request, 'pages/user_edit.html', context)
+
 
 def user_login(request):
     if request.method == 'POST':
