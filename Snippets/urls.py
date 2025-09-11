@@ -24,3 +24,5 @@ urlpatterns = [
     path('api/notifications/unread-count/', views.unread_notifications_count, name='unread-notifications-count'),
     path('api/comment/like/', views.comment_like, name='comment-like')
 ]
+if settings.DEBUG:
+   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

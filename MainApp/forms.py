@@ -1,5 +1,5 @@
 from django import forms
-from MainApp.models import Snippet, Comment
+from MainApp.models import Snippet, Comment, UserProfile
 from MainApp.models import LANG_CHOICES, ACCESS_CHOICES
 from django.contrib.auth.models import User
 
@@ -77,4 +77,23 @@ class CommentForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 5,
                 'placeholder': 'Введите ваш комментарий здесь...'}),
+        }
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar','bio', 'website']
+        widgets = {
+            'bio' : forms.Textarea(attrs={"rows":4, "class": "form-control", 'placeholder': 'О себе'}),
+            'website' : forms.URLInput(attrs={ "class": "form-control", 'placeholder': 'Веб сайт'})
+        }
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name','last_name','email']
+        widgets = {
+            'first_name' : forms.TextInput(attrs={"class": "form-control"}),
+            'last_name' : forms.TextInput(attrs={"class": "form-control"}),
+            'email' : forms.EmailInput(attrs={"class": "form-control"}),
         }

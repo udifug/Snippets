@@ -4,12 +4,16 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.dispatch import Signal
 from django.db.models import F
-from MainApp.models import Comment, Notification
+from MainApp.models import Comment, Notification, UserProfile
 
 logger = logging.getLogger(__name__)
 snippet_view = Signal()
 snippet_deleted = Signal()
 
+@receiver(post_save,sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def send_registration_massage(sender, instance, created, **kwargs):

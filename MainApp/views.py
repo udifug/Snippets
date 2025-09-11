@@ -5,7 +5,7 @@ from MainApp.models import Snippet, Comment, Notification, LikeDislike
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import F, Q, Count, Avg
 from django.shortcuts import render, redirect, get_object_or_404
-from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
+from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm, UserProfileForm, UserEditForm
 from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
@@ -310,8 +310,28 @@ def user_profile(request):
     }
     return render(request,'pages/user_profile.html',context)
 
+@login_required
 def edit_profile(request):
-    ...
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Профиль был изменен!')
+            return redirect('user-profile')
+
+    if request.method == 'GET':
+        user_form = UserEditForm(instance=request.user)
+        profile_form = UserProfileForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    return render(request, 'pages/user_edit.html', context)
 
 def user_login(request):
     if request.method == 'POST':

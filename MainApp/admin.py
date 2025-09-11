@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Snippet, Comment, Tag, Notification
+from .models import Snippet, Comment, Tag, Notification, UserProfile
 from django.db.models import Count
 
 @admin.register(Notification)
@@ -46,3 +46,4 @@ admin.site.index_title = "Welcome to Snippets Admin Portal"
 admin.site.register(Snippet, SnippetAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(UserProfile)

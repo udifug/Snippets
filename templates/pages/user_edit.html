@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block style %}
+    {{ block.super }}
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .profile-edit-header {
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .form-section {
+            background: #1e1e1e;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .form-label {
+            color: #bbb;
+        }
+
+        .form-control {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #e0e0e0;
+        }
+
+        .form-control:focus {
+            background-color: #333;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .form-text {
+            color: #888;
+        }
+
+        .avatar-preview img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #444;
+            margin-bottom: 1rem;
+        }
+
+        .avatar-upload-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #2a2a2a;
+            color: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .avatar-upload-label:hover {
+            background: #444;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #444;
+            border: none;
+            color: #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="profile-edit-header">
+                    <h1><i class="fas fa-user-edit"></i> Редактирование профиля</h1>
+                    <p>Обновите информацию о себе</p>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Основная информация -->
+            <div class="form-section">
+                <h3><i class="fas fa-user"></i> Основная информация</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="id_first_name" class="form-label">Имя</label>
+                            {{ user_form.first_name }}
+                            {% if user_form.first_name.errors %}
+                                <div class="text-danger">
+                                    {% for error in user_form.first_name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="id_last_name" class="form-label">Фамилия</label>
+                            {{ user_form.last_name }}
+                            {% if user_form.last_name.errors %}
+                                <div class="text-danger">
+                                    {% for error in user_form.last_name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    {{ user_form.email }}
+                    {% if user_form.email.errors %}
+                        <div class="text-danger">
+                            {% for error in user_form.email.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Профиль -->
+            <div class="form-section">
+                <h3><i class="fas fa-id-card"></i> Профиль</h3>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="avatar-preview" id="avatarPreview">
+                            <img src="{{ user.profile.get_avatar_url }}" alt="Текущий аватар" class="avatar-preview">
+                        </div>
+
+                        <div class="avatar-upload">
+                            <label for="{{ profile_form.avatar.id_for_label }}" class="avatar-upload-label">
+                                <i class="fas fa-camera"></i> Выбрать фото
+                            </label>
+                            {{ profile_form.avatar }}
+                        </div>
+
+                        {% if profile_form.avatar.errors %}
+                            <div class="text-danger mt-2">
+                                {% for error in profile_form.avatar.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {#                        <div hidden="hidden">#}
+                        {#                            Currently: <a href="/media/avatars/cat.png">avatars/cat.png</a>#}
+                        {#                            <input type="checkbox" name="avatar-clear" id="avatar-clear_id">#}
+                        {#                            <label for="avatar-clear_id">Clear</label><br>#}
+                        {#                            Change:#}
+                        {#                            <input type="file" name="avatar" accept="image/*" id="id_avatar">#}
+                        {#                        </div>#}
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="id_bio" class="form-label">О себе</label>
+                            {{ profile_form.bio }}
+                            <div class="form-text">Расскажите немного о себе (максимум 500 символов)</div>
+                            {% if profile_form.bio.errors %}
+                                <div class="text-danger">
+                                    {% for error in profile_form.bio.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_website" class="form-label">Веб-сайт</label>
+                            {{ profile_form.website }}
+                            <div class="form-text">URL вашего личного сайта или профиля в социальных сетях</div>
+                            {% if profile_form.website.errors %}
+                                <div class="text-danger">
+                                    {% for error in profile_form.website.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Кнопки действий -->
+                <div class="text-center mb-4">
+                    <button type="submit" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                    <a href="{% url 'user-profile' %}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-times"></i> Отмена
+                    </a>
+                </div>
+        </form>
+    </div>
+
+{% endblock %}
