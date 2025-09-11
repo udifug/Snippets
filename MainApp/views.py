@@ -13,6 +13,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from MainApp.signals import snippet_view, snippet_deleted
+from MainApp.utils import send_activation_email, verify_activation_token
 
 logger = logging.getLogger(__name__)
 
@@ -292,7 +293,8 @@ def user_registration(request):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
             user = user_form.save()
-            messages.success(request, f'Добро пожаловать, {user.username}! Вы успешно зарегистрированы.')
+            send_activation_email(user, request)
+            messages.success(request, f'Добро пожаловать, {user.username}! Проверьте свою почту и подтвердите email.')
             return redirect("home")
         else:
             context = {
@@ -301,6 +303,34 @@ def user_registration(request):
             }
             return render(request, 'pages/user_registration.html', context)
 
+
+def activate_account(request, user_id, token):
+    """
+    Подтверждение аккаунта пользователя по токену
+    """
+    try:
+        user = User.objects.get(id=user_id)
+
+        # Проверяем, не подтвержден ли уже аккаунт
+        if user.is_active:
+            messages.info(request, 'Ваш аккаунт уже подтвержден.')
+            return redirect('home')
+
+        # Проверяем токен
+        if verify_activation_token(user, token):
+            user.is_active = True
+            user.save()
+            messages.success(request,
+                             'Ваш аккаунт успешно подтвержден! Теперь вы можете войти в систему.')
+            return redirect('home')
+        else:
+            messages.error(request,
+                           'Недействительная ссылка для подтверждения. Возможно, она устарела.')
+            return redirect('home')
+
+    except User.DoesNotExist:
+        messages.error(request, 'Пользователь не найден.')
+        return redirect('home')
 
 def user_profile(request):
     profile_stat = Snippet.objects.filter(user=request.user).aggregate(

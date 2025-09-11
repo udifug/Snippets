@@ -2,6 +2,7 @@ from django import forms
 from MainApp.models import Snippet, Comment, UserProfile
 from MainApp.models import LANG_CHOICES, ACCESS_CHOICES
 from django.contrib.auth.models import User
+from MainApp.utils import send_activation_email, verify_activation_token
 
 
 class SnippetForm(forms.ModelForm):
@@ -63,6 +64,7 @@ class UserRegistrationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.is_active = False
         if commit:
             user.save()
         return user

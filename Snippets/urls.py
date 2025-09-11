@@ -24,7 +24,8 @@ urlpatterns = [
                   path('notifications/', views.user_notifications, name="notifications"),
                   path('api/notifications/unread-count/', views.unread_notifications_count,
                        name='unread-notifications-count'),
-                  path('api/comment/like/', views.comment_like, name='comment-like')
+                  path('api/comment/like/', views.comment_like, name='comment-like'),
+                  path('activate/<int:user_id>/<str:token>/', views.activate_account, name='activate-account')
               ] + debug_toolbar_urls()
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
