@@ -380,9 +380,15 @@ def user_login(request):
             auth.login(request, user)
             return redirect('home')
         else:
+            try:
+                user = User.objects.get(username=username)
+                if not user.is_active:
+                    errors = ["Подтвердите аккаунт"]
+            except User.DoesNotExist:
+                errors = ["Неверный логин или пароль"]
             context = {
                 'pagename': 'Главное меню',
-                'errors': ['Некорректный логин или пароль'],
+                'errors': errors,
             }
             return render(request, 'pages/index.html', context)
 
