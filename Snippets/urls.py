@@ -2,15 +2,17 @@ from django.urls import path
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from MainApp import views , views_cbv
+from MainApp import views, views_cbv
 from debug_toolbar.toolbar import debug_toolbar_urls
-
 
 urlpatterns = [
                   path('', views.index_page, name='home'),
+                  # path('snippets/add', views.snippet_create, name='snippets-add'),
                   path('snippets/add', views_cbv.AddSnippetView.as_view(), name='snippets-add'),
-                  path('snippets/list', views.snippets_list, {"snippet_my": False}, name='snippets-list'),
-                  path('snippets/mylist', views.snippets_list, {"snippet_my": True}, name='snippets-mylist'),
+                  # path('snippets/list', views.snippets_list, {"snippet_my": False}, name='snippets-list'),
+                  path('snippets/list', views_cbv.SnippetsListView.as_view(), {"snippet_my": False}, name='snippets-list'),
+                  # path('snippets/mylist', views.snippets_list, {"snippet_my": True}, name='snippets-mylist'),
+                  path('snippets/mylist', views_cbv.SnippetsListView.as_view(), {"snippet_my": True}, name='snippets-mylist'),
                   path('snippets/stats', views.snippets_stats, name='snippets-stats'),
                   path('snippet/<int:id>', views.snippet_detail, name="snippet-page"),
                   path('snippet/<int:id>/delete', views.snippet_delete, name="snippet-delete"),
