@@ -1,12 +1,10 @@
 import logging
 import json
-from idlelib.iomenu import errors
-from MainApp.models import Snippet, Comment, Notification, LikeDislike
+from MainApp.models import Snippet, Comment, Notification, LikeDislike, LANG_CHOICES
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import F, Q, Count, Avg, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm, UserProfileForm, UserEditForm
-from MainApp.models import LANG_ICONS, LANG_CHOICES, ACCESS_CHOICES
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -14,6 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from MainApp.signals import snippet_view, snippet_deleted
 from MainApp.utils import send_activation_email, verify_activation_token
+
 
 logger = logging.getLogger(__name__)
 
@@ -138,6 +137,8 @@ def snippets_stats(request):
 
     }
     return render(request, 'pages/snippets_stats.html', context)
+
+# class SnippetDetail(View):
 
 
 def snippet_detail(request, id):
@@ -392,6 +393,7 @@ def user_login(request):
             }
             return render(request, 'pages/index.html', context)
 
+# class UserLogout()
 
 def user_logout(request):
     auth.logout(request)
