@@ -158,13 +158,13 @@ def snippet_detail(request, id):
 
     paginator = Paginator(comments, 5)
     page_number = request.GET.get("page")
-    page_comment = paginator.get_page(page_number)
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'pagename': f'Сниппет: {snippet.name}',
         'snippet': snippet,
         'sort': sort,
-        'page_obj': page_comment,
+        'page_obj': page_obj,
         'comments_form': comments_form,
         'all_comments' : comments.count()
     }

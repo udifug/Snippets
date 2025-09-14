@@ -2,12 +2,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, View, ListView, UpdateView
-from MainApp.models import Snippet, Notification, LANG_CHOICES
-from MainApp.forms import SnippetForm
+from MainApp.models import Snippet, Notification, LANG_CHOICES, Comment
+from MainApp.forms import SnippetForm, CommentForm
 from django.contrib import messages, auth
-from django.shortcuts import  redirect
+from django.shortcuts import redirect
 from django.db.models import Q, Count
 from django.contrib.auth.models import User
+from django.http import Http404, HttpResponse, HttpResponseForbidden
+from MainApp.signals import snippet_view
+from django.core.paginator import Paginator
+
 
 class AddSnippetView(LoginRequiredMixin, CreateView):
     model = Snippet
@@ -25,26 +29,53 @@ class AddSnippetView(LoginRequiredMixin, CreateView):
         messages.success(self.request, f"Сниппет был создан")
         return super().form_valid(form)
 
+
 class SnippetDetailView(DetailView):
     model = Snippet
     template_name = 'pages/snippet_detail.html'
     pk_url_kwarg = 'id'
+    context_object_name = 'snippet'
+
+    def dispatch(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        if snippet.user != request.user and snippet.access == 'private':
+            return HttpResponseForbidden('You are not authorized to access this page')
+        snippet_view.send(sender=None, snippet=snippet)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        snippet = Snippet.objects.prefetch_related("tags").get(id=id)
+        return super().get_queryset().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         snippet = self.get_object()
-        context['pagename'] = f'Сниппет: {snippet.name}'
+        sort = self.request.GET.get("sort")
+        allow_sort = ['creation_date', '-creation_date']
+        if sort not in allow_sort:
+            sort = '-creation_date'
+        comments = Comment.with_likes_count().select_related("author").filter(snippet=snippet).order_by(sort)
+        paginator = Paginator(comments, 5)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context.update({
+            'pagename': f'Сниппет: {snippet.name}',
+            'sort': sort,
+            'page_obj': page_obj,
+            'comments_form': CommentForm(),
+            'all_comments': comments.count()
+        })
+
         return context
+
 
 class UserLogoutView(View):
     def get(self, request):
         auth.logout(request)
         return redirect('home')
 
-class UserNotificationsView(LoginRequiredMixin,ListView):
+
+class UserNotificationsView(LoginRequiredMixin, ListView):
     model = Notification
     template_name = 'pages/notifications.html'
     context_object_name = 'notifications'
@@ -59,6 +90,7 @@ class UserNotificationsView(LoginRequiredMixin,ListView):
         context['pagename'] = 'Мои уведомления'
         return context
 
+
 class SnippetsListView(ListView):
     model = Snippet
     template_name = 'pages/snippets_list.html'
@@ -66,7 +98,7 @@ class SnippetsListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        snippet_my = self.kwargs.get('snippet_my' ,False)
+        snippet_my = self.kwargs.get('snippet_my', False)
 
         if snippet_my:
             if not self.request.user.is_authenticated:
@@ -80,13 +112,11 @@ class SnippetsListView(ListView):
             else:
                 queryset = Snippet.objects.filter(access="public").select_related("user")
 
-
         search = self.request.GET.get("search")
         if search:
             queryset = queryset.filter(
                 Q(name__icontains=search) | Q(code__icontains=search)
             )
-
 
         lang = self.request.GET.get("lang")
         if lang:
@@ -104,9 +134,7 @@ class SnippetsListView(ListView):
         if tag:
             queryset = queryset.filter(tags__name=tag)
 
-
         return queryset
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -141,10 +169,11 @@ class SnippetsListView(ListView):
             'users': users,
             'snippet_my': snippet_my,
             'empty_list': empty_list,
-            'total_snippet' : self.get_queryset().count()
+            'total_snippet': self.get_queryset().count()
         })
 
         return context
+
 
 class SnippetEditView(LoginRequiredMixin, UpdateView):
     model = Snippet
@@ -158,7 +187,7 @@ class SnippetEditView(LoginRequiredMixin, UpdateView):
         if obj.user != self.request.user:
             messages.error(self.request, "У вас нету доступа на изменения")
             return redirect('snippets-list')
-        return super().dispatch( request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -170,4 +199,3 @@ class SnippetEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Сниппет изменен')
         return super().form_valid(form)
-
