@@ -113,7 +113,8 @@ def snippets_list(request, snippet_my):
         "LANG_CHOICES": LANG_CHOICES,
         "users": users,
         'snippet_my': snippet_my,
-        'empty_list': empty_list
+        'empty_list': empty_list,
+        'total_snippet' : Snippet.objects.all().count()
     }
     return render(request, 'pages/snippets_list.html', context)
 
@@ -137,8 +138,6 @@ def snippets_stats(request):
 
     }
     return render(request, 'pages/snippets_stats.html', context)
-
-# class SnippetDetail(View):
 
 
 def snippet_detail(request, id):

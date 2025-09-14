@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, View, ListView
+from django.views.generic import CreateView, DetailView, View, ListView, UpdateView
 from MainApp.models import Snippet, Notification, LANG_CHOICES
 from MainApp.forms import SnippetForm
 from django.contrib import messages, auth
@@ -44,7 +44,7 @@ class UserLogoutView(View):
         auth.logout(request)
         return redirect('home')
 
-class UserNotificationsView(ListView,LoginRequiredMixin):
+class UserNotificationsView(LoginRequiredMixin,ListView):
     model = Notification
     template_name = 'pages/notifications.html'
     context_object_name = 'notifications'
@@ -140,7 +140,34 @@ class SnippetsListView(ListView):
             'LANG_CHOICES': LANG_CHOICES,
             'users': users,
             'snippet_my': snippet_my,
-            'empty_list': empty_list
+            'empty_list': empty_list,
+            'total_snippet' : self.get_queryset().count()
         })
 
         return context
+
+class SnippetEditView(LoginRequiredMixin, UpdateView):
+    model = Snippet
+    form_class = SnippetForm
+    template_name = 'pages/snippet_add_or_edit.html'
+    success_url = reverse_lazy('snippets-mylist')
+    pk_url_kwarg = 'id'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = super().get_object()
+        if obj.user != self.request.user:
+            messages.error(self.request, "У вас нету доступа на изменения")
+            return redirect('snippets-list')
+        return super().dispatch( request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pagename'] = 'Редактирование cниппета'
+        context['edit'] = True
+        context['id'] = self.kwargs.get("id")
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Сниппет изменен')
+        return super().form_valid(form)
+
