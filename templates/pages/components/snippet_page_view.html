@@ -6,16 +6,29 @@
             <i class="bi bi-arrow-left"></i> Назад</a>
 
 
-        <div class="col text-center h4">Информация о сниппете</div>
+        <div class="col text-center h4">
+            {% if favorite %}
+                <form method="post" action="{% url 'unsubscribe' snippet.id %}" class="mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-warning">
+                        Отписаться<i class="fa-solid fa-star"></i>
+                    </button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'subscribe' snippet.id %}" class="mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-warning">
+                        Подписаться<i class="fa-regular fa-star"></i>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
 
         {% if request.user.is_authenticated %}
 
             <div class="position-absolute end-0 top-50 translate-middle-y">
                 <div class="btn-group" role="group">
-                    <form method="post" action="{% url 'subscribe' snippet.id %}" class="mb-0">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-success">Подписаться</button>
-                    </form>
+
                     <a href="{% url 'snippet-edit' snippet.id %}" class="btn btn-outline-primary">Изменить</a>
                     <a href="{% url 'snippet-delete' snippet.id %}" class="btn btn-outline-danger">Удалить</a>
                 </div>

@@ -415,6 +415,13 @@ def user_notifications(request):
     }
     return render(request, 'pages/notifications.html', context)
 
+@login_required
+def user_snippets_subscribe(request):
+    snippet_sub = Subscription.objects.filter(user=request.user).select_related('snippet')
+    context = {
+        'snippets' : snippet_sub
+    }
+    return render(request, 'pages/user_snippet_subscribe.html', context)
 
 def unread_notifications_count(request):
     """
@@ -456,10 +463,19 @@ def unread_notifications_count(request):
         'timestamp': str(datetime.now())
     })
 
+@login_required
 def subscribe_to_snippet(request, id):
     snippet = get_object_or_404(Snippet, id=id)
     Subscription.objects.create(user=request.user, snippet=snippet)
     return redirect('snippet-page', id=id)
+
+@login_required
+def unsubscribe_to_snippet(request, id):
+    snippet = get_object_or_404(Snippet, id=id)
+    sub=Subscription.objects.filter(user=request.user, snippet=snippet).first()
+    if sub:
+        sub.delete()
+    return redirect('snippet-page',id=id)
 
 
 def notifications_delete(request):

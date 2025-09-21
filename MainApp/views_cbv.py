@@ -6,7 +6,7 @@ from MainApp.models import Snippet, Notification, LANG_CHOICES, Comment, Subscri
 from MainApp.forms import SnippetForm, CommentForm
 from django.contrib import messages, auth
 from django.shortcuts import redirect
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Exists, OuterRef, Value, BooleanField
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from MainApp.signals import snippet_view
@@ -49,6 +49,15 @@ class SnippetDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         snippet = self.get_object()
+
+        if self.request.user.is_authenticated:
+            favorite = Subscription.objects.filter(
+                user=self.request.user,
+                snippet=snippet
+            ).exists
+        else:
+            favorite = False
+
         sort = self.request.GET.get("sort")
         allow_sort = ['creation_date', '-creation_date']
         if sort not in allow_sort:
@@ -63,7 +72,8 @@ class SnippetDetailView(DetailView):
             'sort': sort,
             'page_obj': page_obj,
             'comments_form': CommentForm(),
-            'all_comments': comments.count()
+            'all_comments': comments.count(),
+            'favorite' : favorite
         })
 
         return context
@@ -112,6 +122,8 @@ class SnippetsListView(ListView):
             else:
                 queryset = Snippet.objects.filter(access="public").select_related("user")
 
+
+
         search = self.request.GET.get("search")
         if search:
             queryset = queryset.filter(
@@ -133,6 +145,18 @@ class SnippetsListView(ListView):
         tag = self.request.GET.get("tag")
         if tag:
             queryset = queryset.filter(tags__name=tag)
+
+        if self.request.user.is_authenticated:
+            queryset = queryset.annotate(
+                favorite=Exists(
+                    Subscription.objects.filter(
+                        user=self.request.user,
+                        snippet=OuterRef("id")
+                    )
+                )
+            )
+        else:
+            queryset = queryset.annotate(favorite=Value(False, output_field=BooleanField()))
 
         return queryset
 

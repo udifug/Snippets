@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Мои подписки</h1>
+        {% for sub in snippets %}
+            <div class="card mb-3">
+                <div class="card-body">
+
+                    <!-- Заголовок и ссылка на сниппет -->
+                    <h5 class="card-title">
+                        <a class="text-light text-decoration-none fw-bold"
+                           href="{% url 'snippet-page' sub.snippet.id %}">{{ sub.snippet.name }}</a>
+                    </h5>
+
+                    <!-- Язык и автор -->
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Язык: {{ sub.snippet.lang }} | Автор: {{ sub.snippet.user }}
+                    </h6>
+
+                    <!-- Дата подписки -->
+                    <p class="card-text">
+                        Подписка с: {{ sub.created_at|date:"d.m.Y H:i" }}
+                    </p>
+
+                    <!-- Уведомления -->
+                    <div class="mb-3">
+                        <label class="form-check-label me-2">
+                            <input class="form-check-input" type="checkbox" checked disabled>
+                            Комментарии
+                        </label>
+                        <label class="form-check-label me-2">
+                            <input class="form-check-input" type="checkbox" checked disabled>
+                            Лайки
+                        </label>
+                        <label class="form-check-label me-2">
+                            <input class="form-check-input" type="checkbox" checked disabled>
+                            Обновления
+                        </label>
+                    </div>
+
+                    <!-- Кнопки -->
+                    <a href="{% url 'snippet-page' sub.snippet.id %}" class="btn btn-primary me-2">Просмотр</a>
+                    <form method="post" action="{% url 'unsubscribe' sub.snippet.id %}" class="mb-0">
+                        {% csrf_token %}
+                        <button class="btn btn-danger">Отписаться</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        <!-- Ссылка назад -->
+        <a href="{% url 'snippets-list' %}" class="btn btn-secondary mt-3">&larr; Назад к списку сниппетов</a>
+    </div>
+
+{% endblock %}
