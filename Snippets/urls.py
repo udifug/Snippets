@@ -27,6 +27,7 @@ urlpatterns = [
                   path('profile/edit', views.edit_profile, name='edit-profile'),
                   path('comment/add', views.comment_add, name="comment-add"),
                   path('admin/', admin.site.urls),
+                  path('snippet/<int:id>/subscribe/', views.subscribe_to_snippet, name='subscribe'),
                   # path('notifications/', views.user_notifications, name="notifications"),
                   path('notifications/', views_cbv.UserNotificationsView.as_view(), name="notifications"),
                   path('api/notifications/unread-count/', views.unread_notifications_count,

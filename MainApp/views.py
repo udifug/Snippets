@@ -1,6 +1,6 @@
 import logging
 import json
-from MainApp.models import Snippet, Comment, Notification, LikeDislike, LANG_CHOICES
+from MainApp.models import Snippet, Comment, Notification, LikeDislike, LANG_CHOICES, Subscription
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import F, Q, Count, Avg, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
@@ -455,6 +455,11 @@ def unread_notifications_count(request):
         'unread_count': 0,
         'timestamp': str(datetime.now())
     })
+
+def subscribe_to_snippet(request, id):
+    snippet = get_object_or_404(Snippet, id=id)
+    Subscription.objects.create(user=request.user, snippet=snippet)
+    return redirect('snippet-page', id=id)
 
 
 def notifications_delete(request):

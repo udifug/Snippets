@@ -21,7 +21,10 @@
                     <td class="snippet">
                         <i class="{{ snippet.lang | get_lang_icon }}"></i>
                         <a class="text-light text-decoration-none fw-bold"
-                           href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}</a>
+                           href="{% url 'snippet-page' snippet.id %}">{{ snippet.name }}
+                            {% if snippet.favorite %}⭐{% endif %}
+                        </a>
+
                     </td>
 
                     {# Дата создания #}

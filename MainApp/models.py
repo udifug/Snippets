@@ -22,12 +22,14 @@ ACCESS_CHOICES = [
     ("private", "Приватный"),
 ]
 
+User._meta.get_field('email')._unique = True
 
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
         ('comment', 'Новый комментарий'),
         ('like', 'Новый лайк'),
         ('follow', 'Новый подписчик'),
+        ('snippet_update', 'Обновление сниппета')
     ]
 
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
@@ -39,6 +41,9 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=["recipient", "created_at"])
+        ]
 
     def __str__(self):
         return f"Уведомление для {self.recipient.username}: {self.title}"
@@ -69,6 +74,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+
 class Snippet(models.Model):
     name = models.CharField(max_length=100)
     lang = models.CharField(max_length=30, choices=LANG_CHOICES)
@@ -78,11 +84,18 @@ class Snippet(models.Model):
     views_count = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
-    access = models.CharField(max_length=30, choices=ACCESS_CHOICES,default='public')
+    access = models.CharField(max_length=30, choices=ACCESS_CHOICES, default='public')
     tags = models.ManyToManyField(to=Tag)
 
     def __repr__(self):
         return f"S: {self.name}|{self.lang} views:{self.views_count} public:{self.access} user:{self.user}"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["name", "lang"]),
+            models.Index(fields=["user", "name", "lang"])
+        ]
+
 
 class Comment(models.Model):
     text = models.TextField()
@@ -102,13 +115,6 @@ class Comment(models.Model):
             dislikes_count=models.Count('likes',
                                         filter=models.Q(likes__vote=LikeDislike.DISLIKE))
         )
-    # def likes_count(self):
-    #     return self.likes.filter(vote=LikeDislike.LIKE).count()
-    #
-    #
-    # def dislikes_count(self):
-    #     return self.likes.filter(vote=LikeDislike.DISLIKE).count()
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -125,3 +131,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"Профиль {self.user.username}"
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscription')
+    snippet = models.ForeignKey(Snippet, on_delete=models.CASCADE, related_name='subscription')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'snippet']

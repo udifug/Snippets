@@ -5,11 +5,17 @@
            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y">
             <i class="bi bi-arrow-left"></i> Назад</a>
 
+
         <div class="col text-center h4">Информация о сниппете</div>
 
         {% if request.user.is_authenticated %}
+
             <div class="position-absolute end-0 top-50 translate-middle-y">
                 <div class="btn-group" role="group">
+                    <form method="post" action="{% url 'subscribe' snippet.id %}" class="mb-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">Подписаться</button>
+                    </form>
                     <a href="{% url 'snippet-edit' snippet.id %}" class="btn btn-outline-primary">Изменить</a>
                     <a href="{% url 'snippet-delete' snippet.id %}" class="btn btn-outline-danger">Удалить</a>
                 </div>
@@ -84,9 +90,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title mb-0">Код сниппета <i class="{{ snippet.lang | get_lang_icon }}"></i></h5>
-                        
+
                     </div>
-                      <pre><code class="language-{{ snippet.lang|default:'python' }}">{% autoescape on %}{{ snippet.code }}{% endautoescape %}</code></pre>
+                    <pre><code class="language-{{ snippet.lang|default:'python' }}">{% autoescape on %}
+                        {{ snippet.code }}{% endautoescape %}</code></pre>
                 </div>
             </div>
         </div>
@@ -95,7 +102,8 @@
             <h5>Теги:</h5>
             {% if snippet.tags.all %}
                 {% for tag in snippet.tags.all %}
-                    <a href="{% url 'snippets-list' %}{% querystring tag=tag.name %}" class="badge bg-success me-2 mb-1">{{ tag.name }}</a>
+                    <a href="{% url 'snippets-list' %}{% querystring tag=tag.name %}"
+                       class="badge bg-success me-2 mb-1">{{ tag.name }}</a>
                 {% endfor %}
             {% else %}
                 Отсутствуют

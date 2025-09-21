@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, View, ListView, UpdateView
-from MainApp.models import Snippet, Notification, LANG_CHOICES, Comment
+from MainApp.models import Snippet, Notification, LANG_CHOICES, Comment, Subscription
 from MainApp.forms import SnippetForm, CommentForm
 from django.contrib import messages, auth
 from django.shortcuts import redirect
@@ -107,7 +107,7 @@ class SnippetsListView(ListView):
         else:
             if self.request.user.is_authenticated:
                 queryset = Snippet.objects.filter(
-                    Q(access='public') | Q(access='private', user=self.request.user)
+                    Q(access='public') | Q(user=self.request.user)
                 ).select_related("user")
             else:
                 queryset = Snippet.objects.filter(access="public").select_related("user")
@@ -169,7 +169,8 @@ class SnippetsListView(ListView):
             'users': users,
             'snippet_my': snippet_my,
             'empty_list': empty_list,
-            'total_snippet': self.get_queryset().count()
+            'total_snippet': self.get_queryset().count(),
+
         })
 
         return context

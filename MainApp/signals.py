@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.dispatch import Signal
 from django.db.models import F
-from MainApp.models import Comment, Notification, UserProfile
+from MainApp.models import Comment, Notification, UserProfile, Snippet, Subscription
 
 logger = logging.getLogger(__name__)
 snippet_view = Signal()
@@ -43,7 +43,21 @@ def create_comment_notification(sender, instance, created, **kwargs):
         Notification.objects.create(
             recipient=instance.snippet.user,
             notification_type='comment',
-            title=f'Новый комментарий к сниппету "{instance.snippet.name}"',
-            message=f'Пользователь {instance.author.username} оставил комментарий: "{instance.text}"'
+            title=f'{instance.author.username} прокомментировал ваш сниппет "{instance.snippet.name}"',
+            message=f'"{instance.text}"'
 
         )
+
+@receiver(post_save, sender=Comment)
+def edit_snippet_notification(sender, instance, created, **kwargs):
+    if not created:
+        subs=Subscription.objects.filter(snippet=instance)
+        for sub in subs:
+            user = sub.user
+            Notification.objects.create(
+                recipient=user,
+                notification_type='snippet_update',
+                title=f'Сниппет "{instance.snippet.name}" был обновлен',
+                message=f'Посмотрите последние обновления для сниппета "{instance.snippet.name}"'
+
+            )
