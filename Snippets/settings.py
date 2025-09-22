@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default-secret-key')
+SECRET_KEY = os.environ.get('SECRET_KEY', '#%3rmpy6hb52y7j^tu7g*v$762rc0&f+26yy3x!j&+@s4(ndq@')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
@@ -48,12 +48,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.insert(4, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'Snippets.urls'
 
@@ -88,12 +90,29 @@ WSGI_APPLICATION = 'Snippets.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('DATABASE_URL'):
+    # Продакшен - PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'snippets'),
+            'USER': os.environ.get('DB_USER', 'snippets_user'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', ''),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
+        }
     }
-}
+else:
+    # Разработка - SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -137,33 +156,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = "/media/"
 
-# LOGGING = {
-# 'version': 1,
-# 'disable_existing_loggers': False, # Не отключаем существующие логгеры
-#
-# 'formatters': {
-#     'sql_formatter': {
-#         'format': '{levelname} {message} (Duration: {duration:.3f}s)', # Формат для SQL
-#         'style': '{',
-#     },
-# },
-#
-# 'handlers': {
-#     'console_sql': { # Отдельный обработчик для SQL-запросов
-#         'class': 'logging.StreamHandler',
-#         'formatter': 'sql_formatter',
-#         'level': 'DEBUG',
-#     },
-# },
-#
-# 'loggers': {
-#     'django.db.backends': {
-#         'handlers': ['console_sql'], # Используем наш специальный обработчик
-#         'level': 'DEBUG',           # Уровень DEBUG для отображения всех запросов
-#         'propagate': False,         # Очень важно: отключаем всплытие, чтобы SQL не дублировался другими логгерами
-#     },
-# }
-# }
 
 # Django Extensions Shell Plus Configuration
 SHELL_PLUS_PRE_IMPORTS = [
@@ -215,3 +207,8 @@ LOGGING = {
             'propagate': True,
         },
     }, }
+
+if not DEBUG:
+    MIDDLEWARE.insert(2, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

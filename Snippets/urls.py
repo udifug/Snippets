@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
@@ -36,6 +36,15 @@ urlpatterns = [
                        name='unread-notifications-count'),
                   path('api/comment/like/', views.comment_like, name='comment-like'),
                   path('activate/<int:user_id>/<str:token>/', views.activate_account, name='activate-account')
-              ] + debug_toolbar_urls()
+              ]
+
 if settings.DEBUG:
+    try:
+        import debug_toolbar
+        urlpatterns += [
+            path('__debug__/', include(debug_toolbar.urls)),
+        ]
+    except ImportError:
+        pass
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
