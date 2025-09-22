@@ -5,3 +5,5 @@
 db.*
 demo/
 *.log
+.env*
+!.env.example
