@@ -1,0 +1,9 @@
+# Продакшен зависимости для Render.com
+asgiref==3.8.1
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
+Django==5.2.3
+django-extensions==4.1
+python-dotenv==1.1.1
+pillow==11.3.0
+whitenoise==6.9.0
