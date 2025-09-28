@@ -6,3 +6,5 @@ demo/
 *.log
 .env*
 !.env.example
+Dockerfile
+*.sh
